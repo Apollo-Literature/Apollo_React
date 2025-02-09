@@ -9,11 +9,7 @@ interface LoginFormData {
   rememberMe: boolean;
 }
 
-interface LoginPageProps {
-  onSuccess: () => void;
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
+const SigninPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -22,8 +18,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSuccess();
-    // You can also add logic for handling login, like API calls, here
+    // Add authentication logic here
   };
 
   return (
@@ -89,4 +84,4 @@ const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
   );
 };
 
-export default LoginPage;
+export default SigninPage;
