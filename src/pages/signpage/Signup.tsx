@@ -73,7 +73,7 @@ const SignupPage: React.FC = () => {
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
           Already have an account?{' '}
-          <Link to="/signin" style={{ textDecoration: 'none', color: '#1976d2' }}>
+          <Link to="/" style={{ textDecoration: 'none', color: '#1976d2' }}>
             Sign in
           </Link>
         </Typography>
