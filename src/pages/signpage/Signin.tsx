@@ -69,7 +69,9 @@ const SigninPage: React.FC = () => {
           </Box>
 
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-            Sign In
+            <Link to="/home" style={{ textDecoration: 'none', color: 'white' }}>
+              Sign In
+            </Link>
           </Button>
         </Box>
 
