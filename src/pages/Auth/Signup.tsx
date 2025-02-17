@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Paper, Box } from '@mui/material';
-import { Mail, Lock, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Paper,
+  Box,
+} from "@mui/material";
+import { Mail, Lock, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface SignupFormData {
   name: string;
@@ -11,9 +18,9 @@ interface SignupFormData {
 
 const SignupPage: React.FC = () => {
   const [formData, setFormData] = useState<SignupFormData>({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -51,7 +58,9 @@ const SignupPage: React.FC = () => {
             margin="normal"
             InputProps={{ startAdornment: <Mail size={20} /> }}
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             required
           />
           <TextField
@@ -62,7 +71,9 @@ const SignupPage: React.FC = () => {
             margin="normal"
             InputProps={{ startAdornment: <Lock size={20} /> }}
             value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             required
           />
 
@@ -72,8 +83,8 @@ const SignupPage: React.FC = () => {
         </Box>
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-          Already have an account?{' '}
-          <Link to="/" style={{ textDecoration: 'none', color: '#1976d2' }}>
+          Already have an account?{" "}
+          <Link to="/" style={{ textDecoration: "none", color: "#1976d2" }}>
             Sign in
           </Link>
         </Typography>
