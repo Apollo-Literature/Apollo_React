@@ -5,20 +5,18 @@ import SigninPage from "./pages/Auth/Signin"; // Import the SigninPage
 import SignupPage from "./pages/Auth/Signup"; // Import the SignupPage
 import ForgotPassword from "./pages/Auth/FrogotPassword";
 import Home from "./pages/Role/PorR"; // Import the Home page
-import PublisherDashboard from "./pages/Publisher/dashboard"; // Import the PublisherDashboard
-import ReaderDashboard from "./pages/Reader/dashboard"; // Import the ReaderDashboard page
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Add route */}
         <Route path="/" element={<SigninPage />} />
+        {/* Add signin route */}
         <Route path="/signup" element={<SignupPage />} />{" "}
+        {/* Add signup route */}
         <Route path="/forgot-password" element={<ForgotPassword />} />{" "}
-        <Route path="/home" element={<Home />} />
-        <Route path="/publisher/dashboard" element={<PublisherDashboard />} />
-        <Route path="/reader/dashboard" element={<ReaderDashboard />} />
+        {/* Add frogotpassword route */}
+        <Route path="/home" element={<Home />} /> {/* Add home route */}
       </Routes>
     </Router>
   );
