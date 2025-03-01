@@ -1,11 +1,6 @@
-import React from 'react'
 
 function dashboard() {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <div>hLAlo</div>;
 }
 
-export default dashboard
+export default dashboard;
