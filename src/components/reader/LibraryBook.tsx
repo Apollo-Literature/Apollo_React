@@ -1,9 +1,6 @@
 "use client"
 
-import { Box, Typography, Card, CardContent, CardMedia, Grid, Button, useTheme } from "@mui/material"
-import { motion } from "framer-motion"
-
-const MotionCard = motion(Card)
+import { Box, Typography, Container, Divider} from "@mui/material"
 
 interface Book {
   id: number
@@ -43,105 +40,352 @@ const books: Book[] = [
     author: "J.K Rowling",
     image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
   },
-  {
-    id: 6,
-    title: "Harry Potter and the Philosopher's Stone",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 7,
-    title: "Harry Potter and the Chamber of Secrets",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 8,
-    title: "Harry Potter and the Prisoner of Azkaban",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 9,
-    title: "Harry Potter and the Goblet of Fire",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 10,
-    title: "Harry Potter and the Order of Phoenix",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
 ]
 
-export default function BestsellingBooks() {
-  const theme = useTheme()
-
-  return (
-    <Box sx={{ py: 6 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
-        <Typography
-          variant="h2"
-          component="h2"
+export default function LibraryBooks() {
+    return (
+      <>
+      <Typography variant="h3" color="inherit">My library</Typography>
+      <Box sx={{ height: 2000, overflow: "auto"}}>
+        <Container
+          maxWidth="xl"
           sx={{
-            fontWeight: "bold",
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
           }}
         >
-          My library
-        </Typography>
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="inherit">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="inherit"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            
 
-        <Button
-          variant="contained"
-          color="secondary"
+          </Typography>
+        </Container>
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
           sx={{
-            borderRadius: 4,
-            px: 3,
-            py: 1,
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
           }}
         >
-          View All
-        </Button>
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+        
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>    
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+        
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
+
+        <Divider orientation="horizontal"/>
+
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 3,
+            display: "flex", // Align items in a row
+            alignItems: "center", // Center vertically
+            gap: 3, // Spacing between image and text
+          }}
+        >
+          {/*for each function should come here*/}
+        <Typography variant="body1" color="initial">1.</Typography>
+          <img
+            src="https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg"
+            alt=""
+            height={150}
+            style={{ borderRadius: 8 }} // Optional rounded corners
+          />
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{
+              maxWidth: 400, // Ensures text wraps into multiple lines
+              lineHeight: 1.5, // Adds spacing between lines
+              whiteSpace: "normal", // Allows text to wrap naturally
+            }}
+          >
+            Harry Potter and the Philosopher's stone 
+            Progress: 100/1000
+
+          </Typography>
+        </Container>
       </Box>
-
-      <Grid container spacing={3}>
-        {books.map((book, index) => (
-          <Grid item key={book.id} xs={6} sm={4} md={2.4}>
-            <MotionCard
-              elevation={2}
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                bgcolor: theme.palette.background.paper,
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <CardMedia
-                component="img"
-                image={book.image}
-                alt={book.title}
-                sx={{
-                  height: 500,
-                  objectFit: "cover",
-                }}
-              />
-              <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                <Typography variant="subtitle1" component="div" sx={{ fontWeight: "medium", mb: 0.5 }}>
-                  {book.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  by {book.author}
-                </Typography>
-              </CardContent>
-            </MotionCard>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  )
-}
-
+      </>
+    );
+  }
+  
