@@ -5,7 +5,8 @@ import HeroSection from "../../components/reader/HeroSection"
 import PopularAuthors from "../../components/reader/PopularAuthors"
 import BestsellingBooks from "../../components/reader/BestsellingBooks"
 import Footer from "../../components/reader/Footer"
-import BackgroundText from "../../components/reader/BackgroundText"
+import LatestBooks from "../../components/reader/LatestBooks"
+// import BackgroundText from "../../components/reader/BackgroundText"
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -93,7 +94,7 @@ function dashboard() {
         }}
       >
         <Header toggleColorMode={toggleColorMode} />
-        <BackgroundText />
+        {/* <BackgroundText /> */}
 
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
           <Container maxWidth={false} disableGutters>
@@ -101,6 +102,7 @@ function dashboard() {
             <Container maxWidth="xl" sx={{ py: 4 }}>
               <PopularAuthors />
               <BestsellingBooks />
+              <LatestBooks/>
             </Container>
           </Container>
         </Box>
