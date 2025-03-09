@@ -30,12 +30,13 @@ import {
   export default function BookCard({ book, onAIFeatureClick }: BookCardProps) {
     const [isFavorite, setIsFavorite] = useState(false)
   
-    const aiFeatures = [
+    const aiFeatures = (book: Book) => [
       { icon: <AutoStories />, name: 'summary', label: 'Smart Summary', available: book.aiFeatures.hasSummary },
       { icon: <Psychology />, name: 'analysis', label: 'AI Analysis', available: book.aiFeatures.hasAnalysis },
       { icon: <Translate />, name: 'translation', label: 'Translation', available: book.aiFeatures.hasTranslation },
       { icon: <RecordVoiceOver />, name: 'audiobook', label: 'Text to Speech', available: book.aiFeatures.hasAudiobook },
-    ]
+      
+    ].filter(feature => feature.available);
   
     return (
       <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
