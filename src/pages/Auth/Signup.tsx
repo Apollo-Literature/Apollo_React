@@ -94,9 +94,9 @@ const SignupPage: React.FC = () => {
             required
           />
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-            Sign Up
-          </Button>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }} disabled={loading}>
+            {loading ? "Signing Up..." : "Sign Up"}
+            </Button> 
         </Box>
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
