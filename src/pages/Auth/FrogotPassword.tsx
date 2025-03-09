@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { TextField, Button, Typography, Container, Paper, Box } from '@mui/material';
 import { Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -25,8 +25,9 @@ const ForgotPassword: React.FC = () => {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
             fullWidth
-            label="Email"
+            label="Email Address"
             variant="outlined"
+            autoFocus
             type="email"
             margin="normal"
             InputProps={{ startAdornment: <Mail size={20} /> }}
