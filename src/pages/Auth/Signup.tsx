@@ -25,8 +25,25 @@ const SignupPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add API call or authentication logic here
+
+
+  if (!formData.name.trim()) {
+    alert("Name is required");
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    alert("Enter a valid email address");
+    return;
+  }
+
+  if (formData.password.length < 6) {
+    alert("Password must be at least 6 characters long");
+    return;
   };
+
+
+    
 
   return (
     <Container component="main" maxWidth="sm">
