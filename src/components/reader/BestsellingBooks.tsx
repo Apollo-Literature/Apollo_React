@@ -68,6 +68,11 @@ export default function BestsellingBooks() {
             borderRadius: 4,
             px: 3,
             py: 1,
+            transition: "0.3s",
+            "&:hover": {
+              backgroundColor: theme.palette.secondary.dark,
+              transform: "scale(1.05)",
+            },
           }}
         >
           View All
@@ -78,17 +83,25 @@ export default function BestsellingBooks() {
         {books.map((book, index) => (
           <Grid item key={book.id} xs={6} sm={4} md={2.4}>
             <MotionCard
-              elevation={2}
+              elevation={3}
               sx={{
                 height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 bgcolor: theme.palette.background.paper,
+                borderRadius: 2,
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "0.3s",
+                "&:hover": {
+                  boxShadow: 6,
+                },
               }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ scale: 1.05 }}
+              onClick={() => console.log(`Clicked on: ${book.title}`)}
             >
               <CardMedia
                 component="img"
@@ -97,6 +110,7 @@ export default function BestsellingBooks() {
                 sx={{
                   height: 250,
                   objectFit: "cover",
+                  borderBottom: `2px solid ${theme.palette.primary.main}`,
                 }}
               />
               <CardContent sx={{ flexGrow: 1, p: 2 }}>
@@ -114,4 +128,3 @@ export default function BestsellingBooks() {
     </Box>
   )
 }
-
