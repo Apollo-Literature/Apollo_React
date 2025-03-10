@@ -17,31 +17,51 @@ const books: Book[] = [
     id: 1,
     title: "Harry Potter and the Philosopher's Stone",
     author: "J.K Rowling",
+<<<<<<< HEAD
     image: "/placeholder.svg?height=300&width=200",
+=======
+    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
+>>>>>>> 6c975db697c71bd724e2e7c1f02bab8cd6958bd1
   },
   {
     id: 2,
     title: "Harry Potter and the Chamber of Secrets",
     author: "J.K Rowling",
+<<<<<<< HEAD
     image: "/placeholder.svg?height=300&width=200",
+=======
+    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
+>>>>>>> 6c975db697c71bd724e2e7c1f02bab8cd6958bd1
   },
   {
     id: 3,
     title: "Harry Potter and the Prisoner of Azkaban",
     author: "J.K Rowling",
+<<<<<<< HEAD
     image: "/placeholder.svg?height=300&width=200",
+=======
+    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
+>>>>>>> 6c975db697c71bd724e2e7c1f02bab8cd6958bd1
   },
   {
     id: 4,
     title: "Harry Potter and the Goblet of Fire",
     author: "J.K Rowling",
+<<<<<<< HEAD
     image: "/placeholder.svg?height=300&width=200",
+=======
+    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
+>>>>>>> 6c975db697c71bd724e2e7c1f02bab8cd6958bd1
   },
   {
     id: 5,
     title: "Harry Potter and the Order of Phoenix",
     author: "J.K Rowling",
+<<<<<<< HEAD
     image: "/placeholder.svg?height=300&width=200",
+=======
+    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
+>>>>>>> 6c975db697c71bd724e2e7c1f02bab8cd6958bd1
   },
 ]
 
