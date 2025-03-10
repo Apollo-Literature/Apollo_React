@@ -6,15 +6,16 @@ import {
   ThemeProvider,
   createTheme,
   type PaletteMode,
-  Typography, // Import Typography
-  Button, // For demo buttons in new components
-  Grid, //for layout
+  Typography,
+  Button,
+  Grid,
   Card,
   CardContent,
   CardActions,
+  CardMedia,
 } from "@mui/material";
-import Header from "../../components/reader/Header"; // Reuse the same header, assuming it's adaptable.
-import Footer from "../../components/reader/Footer"; // Reuse the same footer
+import Header from "../../components/publisher/Header";
+import Footer from "../../components/publisher/Footer";
 
 // --- Start of Reusable Theme Configuration ---
 const getDesignTokens = (mode: PaletteMode) => ({
@@ -22,48 +23,28 @@ const getDesignTokens = (mode: PaletteMode) => ({
     mode,
     ...(mode === "light"
       ? {
-          primary: {
-            main: "#6247aa",
-          },
-          secondary: {
-            main: "#ff7f7f",
-          },
-          background: {
-            default: "#f0f4f8",
-            paper: "#ffffff",
-          },
+          primary: { main: "#6247aa" },
+          secondary: { main: "#ff7f7f" },
+          background: { default: "#f0f4f8", paper: "#ffffff" },
         }
       : {
-          primary: {
-            main: "#9d8cd6",
-          },
-          secondary: {
-            main: "#ff9999",
-          },
-          background: {
-            default: "#1a1a2e",
-            paper: "#16213e",
-          },
+          primary: { main: "#9d8cd6" },
+          secondary: { main: "#ff9999" },
+          background: { default: "#1a1a2e", paper: "#16213e" },
         }),
   },
   typography: {
     fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontWeight: 700,
-    },
-    h2: {
-      fontWeight: 700,
-    },
-    h3: {
-      fontWeight: 600,
-    },
+    h1: { fontWeight: 700 },
+    h2: { fontWeight: 700 },
+    h3: { fontWeight: 600 },
+    h4: { fontWeight: 600 },
+    subtitle1: { fontWeight: 500 },
   },
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {
-          borderRadius: 8,
-        },
+        root: { borderRadius: 12, padding: "10px 20px" },
       },
     },
     MuiCard: {
@@ -82,21 +63,21 @@ const getDesignTokens = (mode: PaletteMode) => ({
 });
 // --- End of Reusable Theme Configuration ---
 
-// --- Start of Publisher-Specific Components ---
-
-// Placeholder data - replace this.
+// Placeholder data
 const dummyBooks = [
-    { id: 1, title: "Book Title 1", author: "Author Name 1", sales: 120 },
-    { id: 2, title: "Book Title 2", author: "Author Name 2", sales: 250 },
-    { id: 3, title: "Book Title 3", author: "Author Name 3", sales: 80 },
-  ];
+  { id: 1, title: "Book Title 1", author: "Author Name 1", sales: 120 },
+  { id: 2, title: "Book Title 2", author: "Author Name 2", sales: 250 },
+  { id: 3, title: "Book Title 3", author: "Author Name 3", sales: 80 },
+];
 
 const dummySalesData = [
-    { month: 'Jan', sales: 200 },
-    { month: 'Feb', sales: 350 },
-    { month: 'Mar', sales: 420 },
-    { month: 'Apr', sales: 510 },
+  { month: "Jan", sales: 200 },
+  { month: "Feb", sales: 350 },
+  { month: "Mar", sales: 420 },
+  { month: "Apr", sales: 510 },
 ];
+
+// --- Start of Publisher-Specific Components ---
 function PublisherHeroSection() {
   return (
     <Box
@@ -108,73 +89,87 @@ function PublisherHeroSection() {
         textAlign: "center",
       }}
     >
+          <Box
+      sx={{
+        py: 8,
+        px: 4,
+        bgcolor: "primary.main",
+        color: "white",
+        textAlign: "center",
+      }}
+    ></Box>
+
       <Typography variant="h3" gutterBottom>
         Welcome, Publisher!
       </Typography>
       <Typography variant="h6" sx={{ mb: 3 }}>
         Manage your books, track your sales, and grow your readership.
       </Typography>
-       <Button variant="contained" color="secondary">
-          Add New Book
-        </Button>
+      <Button variant="contained" color="secondary" size="large">
+        Add New Book
+      </Button>
     </Box>
   );
 }
 
 function MyBooks() {
-    return (
-      <Box sx={{ py: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          My Books
-        </Typography>
-        <Grid container spacing={3}>
-          {dummyBooks.map((book) => (
-            <Grid item xs={12} sm={6} md={4} key={book.id}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">{book.title}</Typography>
-                  <Typography variant="subtitle1">by {book.author}</Typography>
-                  <Typography variant="body2">Sales: {book.sales}</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Edit
-                  </Button>
-                  <Button size="small" color="primary">
-                    View Details
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
-  }
+  return (
+    <Box sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        My Books
+      </Typography>
+      <Grid container spacing={3}>
+        {dummyBooks.map((book) => (
+          <Grid item xs={12} sm={6} md={4} key={book.id}>
+            <Card>
+              <CardMedia
+                component="img"
+                alt="Book Cover"
+                height="180"
+                image="/path/to/default/cover.jpg" // Placeholder image for book cover
+              />
+              <CardContent>
+                <Typography variant="h6">{book.title}</Typography>
+                <Typography variant="subtitle1">by {book.author}</Typography>
+                <Typography variant="body2">Sales: {book.sales}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" color="primary">
+                  Edit
+                </Button>
+                <Button size="small" color="primary">
+                  View Details
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+}
 
-  function SalesAnalytics() {
-    return (
-      <Box sx={{ py: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Sales Analytics
-        </Typography>
-        <Grid container spacing={2}>
-          {dummySalesData.map((data, index) => (
-             <Grid item xs={3} key={index}>
-             <Card>
-                <CardContent>
+function SalesAnalytics() {
+  return (
+    <Box sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Sales Analytics
+      </Typography>
+      <Grid container spacing={3}>
+        {dummySalesData.map((data, index) => (
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <Card sx={{ bgcolor: "primary.light" }}>
+              <CardContent>
                 <Typography variant="h6">{data.month}</Typography>
                 <Typography variant="body2">{data.sales} Sales</Typography>
-                </CardContent>
+              </CardContent>
             </Card>
-
-           </Grid>
-          ))}
-        </Grid>
-        {/* Add charting library here for visual representation */}
-      </Box>
-    );
-  }
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+}
 // --- End of Publisher-Specific Components ---
 
 function PublisherDashboard() {
@@ -205,7 +200,6 @@ function PublisherDashboard() {
             <Container maxWidth="xl" sx={{ py: 4 }}>
               <MyBooks />
               <SalesAnalytics />
-              {/* <AuthorCollaborations />  Add if needed */}
             </Container>
           </Container>
         </Box>
