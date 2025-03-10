@@ -71,7 +71,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-const navItems: string[] = ["Home", "E-books", "Audiobooks", "Authors", "Premium Library"]
+const navItems: string[] = ["Home", "My library", "Explore"]
 
 interface HeaderProps {
   toggleColorMode: () => void
