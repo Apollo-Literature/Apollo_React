@@ -6,7 +6,6 @@ import PopularAuthors from "../../components/reader/PopularAuthors"
 import BestsellingBooks from "../../components/reader/BestsellingBooks"
 import Footer from "../../components/reader/Footer"
 import LatestBooks from "../../components/reader/LatestBooks"
-// import BackgroundText from "../../components/reader/BackgroundText"
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {

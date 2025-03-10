@@ -76,8 +76,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 // Navigation items with routes
 const navItems = [
   { name: "Home", path: "/reader/dashboard" },
-  { name: "My Library", path: "../Library/dashboard" },
-  { name: "Explore", path: "/explore" },
+  { name: "My Library", path: "../library/dashboard" },
+  { name: "Explore", path: "../Explore/dashboard" },
 ];
 
 interface HeaderProps {

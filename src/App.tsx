@@ -8,6 +8,7 @@ import Home from "./pages/Role/PorR"; // Import the Home page
 import PublisherDashboard from "./pages/Publisher/dashboard"; // Import the PublisherDashboard
 import ReaderDashboard from "./pages/Reader/dashboard"; // Import the ReaderDashboard page";
 import Library from "./pages/Library/dashboard"; // Import the Library;
+import Explore from "./pages/Explore/dashboard"; // Import the Explore;
 
 const App: React.FC = () => {
   return (
@@ -20,7 +21,8 @@ const App: React.FC = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/publisher/dashboard" element={<PublisherDashboard />} />
         <Route path="/reader/dashboard" element={<ReaderDashboard />} />
-        <Route path="/Library/dashboard" element={<Library/>} />
+        <Route path="/library/dashboard" element={<Library />} />
+        <Route path="/explore/dashboard" element={<Explore />} />
       </Routes>
     </Router>
   );
