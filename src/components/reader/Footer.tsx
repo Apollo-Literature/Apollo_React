@@ -1,8 +1,16 @@
-import { Box, Container, Typography, Link, Grid, Divider, useTheme } from "@mui/material"
-import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material"
+import {
+  Box,
+  Container,
+  Typography,
+  Link,
+  Grid,
+  Divider,
+  useTheme,
+} from "@mui/material";
+import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 
 export default function Footer() {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <Box
@@ -20,32 +28,35 @@ export default function Footer() {
               APOLLO
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Your gateway to endless stories and knowledge. Discover books that inspire, educate, and entertain.
+              Your gateway to endless stories and knowledge. Discover books that
+              inspire, educate, and entertain.
             </Typography>
             <Box sx={{ mt: 2 }}>
-<<<<<<< HEAD
-              <Link href="#" color="inherit" sx={{ mr: 2 }}>
+              <Link
+                href="https://www.facebook.com/profile.php?id=61573996170407"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
                 <Facebook />
               </Link>
-              <Link href="#" color="inherit" sx={{ mr: 2 }}>
+              <Link
+                href="https://x.com/Apollo1568264"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
                 <Twitter />
               </Link>
-              <Link href="#" color="inherit" sx={{ mr: 2 }}>
+              <Link
+                href="https://www.instagram.com/apolloonlinelibrary/"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
                 <Instagram />
               </Link>
-              <Link href="#" color="inherit">
-=======
-              <Link href="https://www.facebook.com/profile.php?id=61573996170407" color="inherit" sx={{ mr: 2 }}>
-                <Facebook />
-              </Link>
-              <Link href="https://x.com/Apollo1568264" color="inherit" sx={{ mr: 2 }}>
-                <Twitter />
-              </Link>
-              <Link href="https://www.instagram.com/apolloonlinelibrary/" color="inherit" sx={{ mr: 2 }}>
-                <Instagram />
-              </Link>
-              <Link href="https://www.linkedin.com/in/apollo-lib-305946354/" color="inherit">
->>>>>>> dev
+              <Link
+                href="https://www.linkedin.com/in/apollo-lib-305946354/"
+                color="inherit"
+              >
                 <LinkedIn />
               </Link>
             </Box>
@@ -127,7 +138,13 @@ export default function Footer() {
 
         <Divider sx={{ my: 4 }} />
 
-        <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
           <Typography variant="body2" color="text.secondary">
             &copy; {new Date().getFullYear()} Apollo Books. All rights reserved.
           </Typography>
@@ -145,6 +162,5 @@ export default function Footer() {
         </Box>
       </Container>
     </Box>
-  )
+  );
 }
-
