@@ -2,45 +2,7 @@
 
 import { Box, Typography, Container, Divider} from "@mui/material"
 
-interface Book {
-  id: number
-  title: string
-  author: string
-  image: string
-}
 
-const books: Book[] = [
-  {
-    id: 1,
-    title: "Harry Potter and the Philosopher's Stone",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 2,
-    title: "Harry Potter and the Chamber of Secrets",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 3,
-    title: "Harry Potter and the Prisoner of Azkaban",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 4,
-    title: "Harry Potter and the Goblet of Fire",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 5,
-    title: "Harry Potter and the Order of Phoenix",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-]
 
 export default function LibraryBooks() {
     return (
