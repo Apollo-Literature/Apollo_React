@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
-import { TextField, Checkbox, Button, Typography, Container, Paper, Box } from '@mui/material';
-import { Lock, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  TextField,
+  Checkbox,
+  Button,
+  Typography,
+  Container,
+  Paper,
+  Box,
+} from "@mui/material";
+import { Lock, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface LoginFormData {
   email: string;
@@ -11,14 +20,37 @@ interface LoginFormData {
 
 const SigninPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     rememberMe: false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add authentication logic here
+
+    const data = JSON.stringify({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:8080/api/v1/auth/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -40,7 +72,9 @@ const SigninPage: React.FC = () => {
             margin="normal"
             InputProps={{ startAdornment: <Mail size={20} /> }}
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             required
           />
           <TextField
@@ -51,33 +85,45 @@ const SigninPage: React.FC = () => {
             margin="normal"
             InputProps={{ startAdornment: <Lock size={20} /> }}
             value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             required
           />
 
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Box display="flex" alignItems="center">
               <Checkbox
                 checked={formData.rememberMe}
-                onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({ ...formData, rememberMe: e.target.checked })
+                }
               />
               <Typography variant="body2">Remember me</Typography>
             </Box>
-            <Link to="/forgot-password" style={{ textDecoration: 'none', color: '#1976d2' }}>
+            <Link
+              to="/forgot-password"
+              style={{ textDecoration: "none", color: "#1976d2" }}
+            >
               Forgot password?
             </Link>
           </Box>
 
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-            <Link to="/home" style={{ textDecoration: 'none', color: 'white' }}>
-              Sign In
-            </Link>
+            Sign In
           </Button>
         </Box>
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-          Don't have an account?{' '}
-          <Link to="/signup" style={{ textDecoration: 'none', color: '#1976d2' }}>
+          Don't have an account?{" "}
+          <Link
+            to="/signup"
+            style={{ textDecoration: "none", color: "#1976d2" }}
+          >
             Sign up
           </Link>
         </Typography>

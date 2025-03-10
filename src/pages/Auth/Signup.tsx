@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Mail, Lock, User } from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 interface SignupFormData {
   name: string;
@@ -25,7 +26,40 @@ const SignupPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add API call or authentication logic here
+
+    const [firstName, lastName] = formData.name.split(" ");
+
+    const data = JSON.stringify({
+      firstName: firstName || "",
+      lastName: lastName || "",
+      email: formData.email,
+      password: formData.password,
+      dateOfBirth: "2003-04-19",
+      roles: [
+        {
+          name: "READER",
+        },
+      ],
+    });
+
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:8080/api/v1/auth/register",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
