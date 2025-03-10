@@ -7,10 +7,10 @@ import {
   Container,
   Paper,
   Box,
+  InputAdornment,
 } from "@mui/material";
 import { Lock, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 interface LoginFormData {
   email: string;
@@ -59,7 +59,7 @@ const SigninPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Sign In
         </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
           Use your account details below.
         </Typography>
 
@@ -70,7 +70,13 @@ const SigninPage: React.FC = () => {
             variant="outlined"
             type="email"
             margin="normal"
-            InputProps={{ startAdornment: <Mail size={20} /> }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Mail size={20} />
+                </InputAdornment>
+              ),
+            }}
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
@@ -83,7 +89,13 @@ const SigninPage: React.FC = () => {
             variant="outlined"
             type="password"
             margin="normal"
-            InputProps={{ startAdornment: <Lock size={20} /> }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock size={20} />
+                </InputAdornment>
+              ),
+            }}
             value={formData.password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
@@ -105,25 +117,26 @@ const SigninPage: React.FC = () => {
               />
               <Typography variant="body2">Remember me</Typography>
             </Box>
-            <Link
-              to="/forgot-password"
-              style={{ textDecoration: "none", color: "#1976d2" }}
-            >
+            <Link to="/forgot-password" style={{ textDecoration: "none", color: "#1976d2" }}>
               Forgot password?
             </Link>
           </Box>
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3 }}
+            component={Link}
+            to="/home"
+          >
             Sign In
           </Button>
         </Box>
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
           Don't have an account?{" "}
-          <Link
-            to="/signup"
-            style={{ textDecoration: "none", color: "#1976d2" }}
-          >
+          <Link to="/signup" style={{ textDecoration: "none", color: "#1976d2" }}>
             Sign up
           </Link>
         </Typography>

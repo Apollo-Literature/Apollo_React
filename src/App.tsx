@@ -7,6 +7,10 @@ import ForgotPassword from "./pages/Auth/FrogotPassword";
 import Home from "./pages/Role/PorR"; // Import the Home page
 import PublisherDashboard from "./pages/Publisher/dashboard"; // Import the PublisherDashboard
 import ReaderDashboard from "./pages/Reader/dashboard"; // Import the ReaderDashboard page
+<<<<<<< HEAD
+=======
+import LibraryBooks from "./components/reader/LibraryBook";
+>>>>>>> dev
 
 const App: React.FC = () => {
   return (
@@ -19,6 +23,10 @@ const App: React.FC = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/publisher/dashboard" element={<PublisherDashboard />} />
         <Route path="/reader/dashboard" element={<ReaderDashboard />} />
+<<<<<<< HEAD
+=======
+        <Route path="/reader/library/dashboard" element={<LibraryBooks />} />
+>>>>>>> dev
       </Routes>
     </Router>
   );

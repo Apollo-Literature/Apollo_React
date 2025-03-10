@@ -23,6 +23,7 @@ export default function Footer() {
               Your gateway to endless stories and knowledge. Discover books that inspire, educate, and entertain.
             </Typography>
             <Box sx={{ mt: 2 }}>
+<<<<<<< HEAD
               <Link href="#" color="inherit" sx={{ mr: 2 }}>
                 <Facebook />
               </Link>
@@ -33,6 +34,18 @@ export default function Footer() {
                 <Instagram />
               </Link>
               <Link href="#" color="inherit">
+=======
+              <Link href="https://www.facebook.com/profile.php?id=61573996170407" color="inherit" sx={{ mr: 2 }}>
+                <Facebook />
+              </Link>
+              <Link href="https://x.com/Apollo1568264" color="inherit" sx={{ mr: 2 }}>
+                <Twitter />
+              </Link>
+              <Link href="https://www.instagram.com/apolloonlinelibrary/" color="inherit" sx={{ mr: 2 }}>
+                <Instagram />
+              </Link>
+              <Link href="https://www.linkedin.com/in/apollo-lib-305946354/" color="inherit">
+>>>>>>> dev
                 <LinkedIn />
               </Link>
             </Box>
