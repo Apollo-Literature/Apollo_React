@@ -6,8 +6,8 @@ import SignupPage from "./pages/Auth/Signup"; // Import the SignupPage
 import ForgotPassword from "./pages/Auth/FrogotPassword";
 import Home from "./pages/Role/PorR"; // Import the Home page
 import PublisherDashboard from "./pages/Publisher/dashboard"; // Import the PublisherDashboard
-import ReaderDashboard from "./pages/Reader/dashboard"; // Import the ReaderDashboard page
-import LibraryBooks from "./components/reader/LibraryBook";
+import ReaderDashboard from "./pages/Reader/dashboard"; // Import the ReaderDashboard page";
+import Library from "./pages/Library/dashboard"; // Import the Library;
 
 const App: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const App: React.FC = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/publisher/dashboard" element={<PublisherDashboard />} />
         <Route path="/reader/dashboard" element={<ReaderDashboard />} />
-        <Route path="/reader/library/dashboard" element={<LibraryBooks />} />
+        <Route path="/Library/dashboard" element={<Library/>} />
       </Routes>
     </Router>
   );

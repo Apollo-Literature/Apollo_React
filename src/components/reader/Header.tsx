@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -19,17 +20,18 @@ import {
   Divider,
   Slide,
   useScrollTrigger,
-} from "@mui/material"
+} from "@mui/material";
 import {
   Search as SearchIcon,
   ShoppingCart as ShoppingCartIcon,
   Menu as MenuIcon,
   Brightness4 as Brightness4Icon,
   Brightness7 as Brightness7Icon,
-} from "@mui/icons-material"
-import { styled, alpha } from "@mui/material/styles"
-import apolloLogo from "../../assets/apollo-logo.png"
+} from "@mui/icons-material";
+import { styled, alpha } from "@mui/material/styles";
+import apolloLogo from "../../assets/apollo-logo.png";
 
+// Search Input Styling
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: 20,
@@ -45,7 +47,7 @@ const Search = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     maxWidth: "100%",
   },
-}))
+}));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -56,7 +58,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   right: theme.spacing(2),
-}))
+}));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -69,50 +71,72 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       width: "20ch",
     },
   },
-}))
+}));
 
-const navItems: string[] = ["Home", "My library", "Explore"]
+// Navigation items with routes
+const navItems = [
+  { name: "Home", path: "/reader/dashboard" },
+  { name: "My Library", path: "../Library/dashboard" },
+  { name: "Explore", path: "/explore" },
+];
 
 interface HeaderProps {
-  toggleColorMode: () => void
+  toggleColorMode: () => void;
 }
 
 export default function Header({ toggleColorMode }: HeaderProps) {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"))
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
+    setMobileOpen(!mobileOpen);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 })
+  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
 
+  // Mobile Drawer
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Box sx={{ my: 2, display: "flex", justifyContent: "center" }}>
-        <img src={apolloLogo || "/placeholder.svg"} alt="Apollo Logo" style={{ height: 40 }} />
-        <Typography variant="h6" sx={{ ml: 1 }}>APOLLO</Typography>
+        <img
+          src={apolloLogo || "/placeholder.svg"}
+          alt="Apollo Logo"
+          style={{ height: 40 }}
+        />
+        <Typography variant="h6" sx={{ ml: 1 }}>
+          APOLLO
+        </Typography>
       </Box>
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemText primary={item} sx={{ textAlign: "center" }} />
+          <ListItem key={item.name} disablePadding>
+            <ListItemText
+              primary={
+                <Link
+                  to={item.path}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  {item.name}
+                </Link>
+              }
+              sx={{ textAlign: "center" }}
+            />
           </ListItem>
         ))}
       </List>
     </Box>
-  )
+  );
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -122,55 +146,103 @@ export default function Header({ toggleColorMode }: HeaderProps) {
         elevation={isScrolled ? 4 : 0}
         sx={{
           bgcolor: isScrolled ? "background.default" : "transparent",
-          transition: theme.transitions.create(["background-color", "box-shadow"]),
+          transition: theme.transitions.create([
+            "background-color",
+            "box-shadow",
+          ]),
         }}
       >
         <Toolbar>
           {isMobile && (
-            <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
               <MenuIcon />
             </IconButton>
           )}
 
+          {/* Logo */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <img src={apolloLogo || "/placeholder.svg"} alt="Apollo Logo" style={{ height: 40 }} />
-            <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" }, ml: 1, fontWeight: "bold" }}>
+            <img
+              src={apolloLogo || "/placeholder.svg"}
+              alt="Apollo Logo"
+              style={{ height: 40 }}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                ml: 1,
+                fontWeight: "bold",
+              }}
+            >
               APOLLO
             </Typography>
           </Box>
 
+          {/* Desktop Navigation */}
           {!isMobile && (
             <Box sx={{ display: "flex", ml: 4 }}>
               {navItems.map((item) => (
-                <Button key={item} sx={{ color: "inherit", mx: 0.5 }}>{item}</Button>
+                <Button
+                  key={item.name}
+                  component={Link}
+                  to={item.path}
+                  sx={{ color: "inherit", mx: 0.5 }}
+                >
+                  {item.name}
+                </Button>
               ))}
             </Box>
           )}
 
           <Box sx={{ flexGrow: 1 }} />
 
+          {/* Search Bar */}
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }} />
+            <StyledInputBase
+              placeholder="Search..."
+              inputProps={{ "aria-label": "search" }}
+            />
           </Search>
 
+          {/* Cart Icon */}
           <IconButton color="inherit">
             <Badge badgeContent={2} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
 
+          {/* Theme Toggle Button */}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
           </IconButton>
 
-          <Button variant="contained" color="primary" sx={{ ml: 2, borderRadius: 2, "&:hover": { bgcolor: "primary.dark" } }}>
+          {/* Login Button */}
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              ml: 2,
+              borderRadius: 2,
+              "&:hover": { bgcolor: "primary.dark" },
+            }}
+          >
             Login
           </Button>
         </Toolbar>
 
+        {/* Mobile Navigation Drawer */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -185,5 +257,5 @@ export default function Header({ toggleColorMode }: HeaderProps) {
         </Drawer>
       </AppBar>
     </Slide>
-  )
+  );
 }
