@@ -84,7 +84,7 @@ export default function LibraryBooks() {
           <Pagination
             count={pageCount}
             page={page}
-            onChange={(event, value) => setPage(value)}
+            onChange={(_event, value) => setPage(value)}
             color="primary"
           />
         </Box>
