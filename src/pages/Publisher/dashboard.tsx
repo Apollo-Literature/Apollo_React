@@ -13,11 +13,24 @@ import {
   CardContent,
   CardActions,
   CardMedia,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import Header from "../../components/publisher/Header";
 import Footer from "../../components/publisher/Footer";
 
-// --- Start of Reusable Theme Configuration ---
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
@@ -33,81 +46,119 @@ const getDesignTokens = (mode: PaletteMode) => ({
           background: { default: "#1a1a2e", paper: "#16213e" },
         }),
   },
-  typography: {
-    fontFamily: '"Poppins", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: { fontWeight: 700 },
-    h2: { fontWeight: 700 },
-    h3: { fontWeight: 600 },
-    h4: { fontWeight: 600 },
-    subtitle1: { fontWeight: 500 },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: { borderRadius: 12, padding: "10px 20px" },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-          "&:hover": {
-            transform: "translateY(-5px)",
-            boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-          },
-        },
-      },
-    },
-  },
 });
-// --- End of Reusable Theme Configuration ---
 
-// Placeholder data
 const dummyBooks = [
   { id: 1, title: "Book Title 1", author: "Author Name 1", sales: 120 },
   { id: 2, title: "Book Title 2", author: "Author Name 2", sales: 250 },
   { id: 3, title: "Book Title 3", author: "Author Name 3", sales: 80 },
 ];
 
-const dummySalesData = [
-  { month: "Jan", sales: 200 },
-  { month: "Feb", sales: 350 },
-  { month: "Mar", sales: 420 },
-  { month: "Apr", sales: 510 },
+const salesData = [
+  { month: "Jan", sales: 200, revenue: 4000 },
+  { month: "Feb", sales: 350, revenue: 7000 },
+  { month: "Mar", sales: 420, revenue: 8400 },
+  { month: "Apr", sales: 510, revenue: 10200 },
 ];
 
-// --- Start of Publisher-Specific Components ---
 function PublisherHeroSection() {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [bookTitle, setBookTitle] = useState("");
+  const [bookAuthor, setBookAuthor] = useState("");
+  const [bookSales, setBookSales] = useState("");
+
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleFormSubmit = () => {
+    // Handle form submission (you can process book data here)
+    console.log("New Book Added:", {
+      title: bookTitle,
+      author: bookAuthor,
+      sales: bookSales,
+    });
+
+    // Reset form fields
+    setBookTitle("");
+    setBookAuthor("");
+    setBookSales("");
+
+    setOpenDialog(false); // Close dialog after submission
+  };
+
   return (
     <Box
       sx={{
-        py: 8,
+        py: 20,
         px: 4,
         bgcolor: "primary.main",
         color: "white",
         textAlign: "center",
       }}
     >
-          <Box
-      sx={{
-        py: 8,
-        px: 4,
-        bgcolor: "primary.main",
-        color: "white",
-        textAlign: "center",
-      }}
-    ></Box>
-
       <Typography variant="h3" gutterBottom>
         Welcome, Publisher!
       </Typography>
       <Typography variant="h6" sx={{ mb: 3 }}>
         Manage your books, track your sales, and grow your readership.
       </Typography>
-      <Button variant="contained" color="secondary" size="large">
+      <Button
+        variant="contained"
+        color="secondary"
+        size="large"
+        onClick={handleDialogOpen}
+      >
         Add New Book
       </Button>
+
+      {/* Dialog for Adding a New Book */}
+      <Dialog open={openDialog} onClose={handleDialogClose}>
+        <DialogTitle>Add New Book</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Book Title"
+            fullWidth
+            variant="outlined"
+            value={bookTitle}
+            onChange={(e) => setBookTitle(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="dense"
+            label="Author Name"
+            fullWidth
+            variant="outlined"
+            value={bookAuthor}
+            onChange={(e) => setBookAuthor(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="dense"
+            label="Sales"
+            type="number"
+            fullWidth
+            variant="outlined"
+            value={bookSales}
+            onChange={(e) => setBookSales(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleFormSubmit} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
@@ -126,7 +177,7 @@ function MyBooks() {
                 component="img"
                 alt="Book Cover"
                 height="180"
-                image="/path/to/default/cover.jpg" // Placeholder image for book cover
+                image="/path/to/default/cover.jpg"
               />
               <CardContent>
                 <Typography variant="h6">{book.title}</Typography>
@@ -155,22 +206,32 @@ function SalesAnalytics() {
       <Typography variant="h4" gutterBottom>
         Sales Analytics
       </Typography>
-      <Grid container spacing={3}>
-        {dummySalesData.map((data, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card sx={{ bgcolor: "primary.light" }}>
-              <CardContent>
-                <Typography variant="h6">{data.month}</Typography>
-                <Typography variant="body2">{data.sales} Sales</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          data={salesData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey="sales"
+            stroke="#8884d8"
+            strokeWidth={2}
+          />
+          <Line
+            type="monotone"
+            dataKey="revenue"
+            stroke="#82ca9d"
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </Box>
   );
 }
-// --- End of Publisher-Specific Components ---
 
 function PublisherDashboard() {
   const [mode, setMode] = useState<PaletteMode>("light");
@@ -193,7 +254,6 @@ function PublisherDashboard() {
         }}
       >
         <Header toggleColorMode={toggleColorMode} />
-
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
           <Container maxWidth={false} disableGutters>
             <PublisherHeroSection />
@@ -203,7 +263,6 @@ function PublisherDashboard() {
             </Container>
           </Container>
         </Box>
-
         <Footer />
       </Box>
     </ThemeProvider>

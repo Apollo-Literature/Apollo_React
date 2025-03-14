@@ -1,117 +1,100 @@
-"use client"
+"use client";
 
-import { Box, Typography, Card, CardContent, CardMedia, Grid, Button, useTheme } from "@mui/material"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Box, Typography, Card, CardContent, CardMedia, Grid, Button, CircularProgress, useTheme } from "@mui/material";
+import { motion } from "framer-motion";
 
-const MotionCard = motion(Card)
+const MotionCard = motion(Card);
 
 interface Book {
-  id: number
-  title: string
-  author: string
-  image: string
+  bookId: number;
+  title: string;
+  thumbnail?: string; // Optional in case it's missing
 }
 
-const books: Book[] = [
-  {
-    id: 1,
-    title: "Harry Potter and the Philosopher's Stone",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 2,
-    title: "Harry Potter and the Chamber of Secrets",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 3,
-    title: "Harry Potter and the Prisoner of Azkaban",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 4,
-    title: "Harry Potter and the Goblet of Fire",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-  {
-    id: 5,
-    title: "Harry Potter and the Order of Phoenix",
-    author: "J.K Rowling",
-    image: "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  },
-]
-
 export default function BestsellingBooks() {
-  const theme = useTheme()
+  const theme = useTheme();
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/v1/books/all-books");
+        console.log("API Response:", response.data); // Debugging log
+        if (Array.isArray(response.data)) {
+          setBooks(response.data);
+        } else {
+          setError("Invalid API response format.");
+        }
+      } catch (err) {
+        console.error("API Error:", err);
+        setError("Failed to load books. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
 
   return (
     <Box sx={{ py: 6 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{
-            fontWeight: "bold",
-          }}
-        >
+        <Typography variant="h4" component="h2" sx={{ fontWeight: "bold" }}>
           Latest Books
         </Typography>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{
-            borderRadius: 4,
-            px: 3,
-            py: 1,
-          }}
-        >
+        <Button variant="contained" color="secondary" sx={{ borderRadius: 4, px: 3, py: 1 }}>
           View All
         </Button>
       </Box>
 
-      <Grid container spacing={3}>
-        {books.map((book, index) => (
-          <Grid item key={book.id} xs={6} sm={4} md={2.4}>
-            <MotionCard
-              elevation={2}
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                bgcolor: theme.palette.background.paper,
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <CardMedia
-                component="img"
-                image={book.image}
-                alt={book.title}
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Typography color="error" sx={{ textAlign: "center", mt: 4 }}>
+          {error}
+        </Typography>
+      ) : (
+        <Grid container spacing={3}>
+          {books.map((book, index) => (
+            <Grid item key={book.bookId} xs={12} sm={6} md={4} lg={3}>
+              <MotionCard
+                elevation={2}
                 sx={{
-                  height: 250,
-                  objectFit: "cover",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  bgcolor: theme.palette.background.paper,
                 }}
-              />
-              <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                <Typography variant="subtitle1" component="div" sx={{ fontWeight: "medium", mb: 0.5 }}>
-                  {book.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  by {book.author}
-                </Typography>
-              </CardContent>
-            </MotionCard>
-          </Grid>
-        ))}
-      </Grid>
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <CardMedia
+                  component="img"
+                  image={book.thumbnail || "https://via.placeholder.com/250"} // Fallback image
+                  alt={book.title}
+                  sx={{
+                    height: 250,
+                    objectFit: "cover",
+                  }}
+                />
+                <CardContent sx={{ flexGrow: 1, p: 2 }}>
+                  <Typography variant="subtitle1" component="div" sx={{ fontWeight: "medium", mb: 0.5 }}>
+                    {book.title}
+                  </Typography>
+                </CardContent>
+              </MotionCard>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
-  )
+  );
 }
-
