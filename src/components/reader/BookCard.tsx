@@ -20,7 +20,7 @@ import {
     Share,
   } from '@mui/icons-material'
   import { useState } from 'react'
-  import { Book } from '../types'
+  import { Book } from '../../types'
   
   interface BookCardProps {
     book: Book

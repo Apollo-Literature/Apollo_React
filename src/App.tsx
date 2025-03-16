@@ -7,11 +7,10 @@ import ForgotPassword from "./pages/Auth/FrogotPassword";
 import Home from "./pages/Role/PorR";
 import PublisherDashboard from "./pages/Publisher/dashboard";
 import ReaderDashboard from "./pages/Reader/dashboard";
-import Library from "./pages/Library/dashboard";
-import Explore from "./pages/Explore/dashboard";
+import Library from "./pages/Reader/Library/dashboard";
+import Explore from "./pages/Reader/Explore/dashboard";
 
 const App: React.FC = () => {
-
   return (
     <Router>
       <Routes>

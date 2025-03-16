@@ -1,10 +1,20 @@
-import { useState, useMemo } from "react";
-import { Box, Container, CssBaseline, ThemeProvider, createTheme, PaletteMode } from "@mui/material";
-import Header from "../../components/reader/Header";
-import LibraryBooks from "../../components/reader/LibraryBook";
-import Footer from "../../components/reader/Footer";
-import BackgroundText from "../../components/reader/BackgroundText";
+"use client";
 
+import { useState, useMemo } from "react";
+import {
+  Box,
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  PaletteMode,
+  Typography,
+} from "@mui/material";
+import Header from "../../../components/reader/Header";
+import Footer from "../../../components/reader/Footer";
+import BackgroundText from "../../../components/reader/BackgroundText";
+
+// Define theme design tokens
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
@@ -45,25 +55,45 @@ const getDesignTokens = (mode: PaletteMode) => ({
   },
 });
 
-const Dashboard = () => {
+const ExplorePage = () => {
   const [mode, setMode] = useState<PaletteMode>("light");
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
-  const toggleColorMode = () => setMode((prev) => (prev === "light" ? "dark" : "light"));
+  const toggleColorMode = () =>
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   return (
-    <div >
+    <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", bgcolor: "background.default", color: "text.primary" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+            bgcolor: "background.default",
+            color: "text.primary",
+          }}
+        >
+          {/* Pass the toggleColorMode function to Header */}
           <Header toggleColorMode={toggleColorMode} />
           <BackgroundText />
+
           <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
             <Container maxWidth="xl" disableGutters sx={{ py: 10 }}>
-              <LibraryBooks />
+              {/* Explore Page Content */}
+              <Typography variant="h3" gutterBottom>
+                Explore Our Collection
+              </Typography>
+              <Typography variant="h6">
+                Discover new items, books, and content to enhance your
+                experience.
+              </Typography>
+              {/* Add your content here */}
             </Container>
           </Box>
+
           <Footer />
         </Box>
       </ThemeProvider>
@@ -71,4 +101,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ExplorePage;
