@@ -97,7 +97,6 @@ function PublisherHeroSection() {
           <Box sx={{ display: "grid", gap: 2, py: 2 }}>
             <TextField fullWidth label="Book Title" name="title" value={bookData.title} onChange={handleChange} required />
             <TextField fullWidth label="Author Name" name="author" value={bookData.author} onChange={handleChange} required />
-            <TextField fullWidth label="Category" name="category" value={bookData.category} onChange={handleChange} required />
             <TextField fullWidth multiline rows={3} label="Description" name="description" value={bookData.description} onChange={handleChange} required />
             <TextField fullWidth label="Price" type="number" name="price" value={bookData.price} onChange={handleChange} required />
             <TextField fullWidth type="date" name="publishedDate" value={bookData.publishedDate} onChange={handleChange} required InputLabelProps={{ shrink: true }} label="Published Date" />
