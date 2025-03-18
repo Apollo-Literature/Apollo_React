@@ -88,21 +88,6 @@ export default function HeroSection() {
 
               <MotionBox initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
                 <MotionButton
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    mr: 2,
-                    px: 4,
-                    py: 1.5,
-                    borderRadius: 4,
-                    boxShadow: "0 6px 20px rgba(0, 102, 255, 0.3)",
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Join Apollo
-                </MotionButton>
-                <MotionButton
                   variant="outlined"
                   size="large"
                   sx={{
