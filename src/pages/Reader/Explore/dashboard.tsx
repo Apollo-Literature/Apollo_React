@@ -64,40 +64,38 @@ const ExplorePage = () => {
     setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            minHeight: "100vh",
-            bgcolor: "background.default",
-            color: "text.primary",
-          }}
-        >
-          {/* Pass the toggleColorMode function to Header */}
-          <Header toggleColorMode={toggleColorMode} />
-          <BackgroundText />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          bgcolor: "background.default",
+          color: "text.primary",
+        }}
+      >
+        {/* Header receives the toggleColorMode function */}
+        <Header toggleColorMode={toggleColorMode} />
+        <BackgroundText />
 
-          <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
-            <Container maxWidth="xl" disableGutters sx={{ py: 10 }}>
-              {/* Explore Page Content */}
-              <Typography variant="h3" gutterBottom>
-                Explore Our Collection
-              </Typography>
-              <Typography variant="h6">
-                Discover new items, books, and content to enhance your
-                experience.
-              </Typography>
-              {/* Add your content here */}
-            </Container>
-          </Box>
+        <Box component="main" sx={{ flexGrow: 1, overflow: "hidden", py: 6 }}>
+          <Container maxWidth="xl" disableGutters sx={{ textAlign: "center" }}>
+            {/* Explore Page Content */}
+            <Typography variant="h3" gutterBottom fontWeight="bold">
+              Explore Our Collection
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+              Discover new items, books, and content to enhance your experience.
+            </Typography>
 
-          <Footer />
+            {/* Add any additional content or components here */}
+          </Container>
         </Box>
-      </ThemeProvider>
-    </div>
+
+        <Footer />
+      </Box>
+    </ThemeProvider>
   );
 };
 
