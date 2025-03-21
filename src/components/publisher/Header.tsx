@@ -35,9 +35,9 @@ import apolloLogo from "../../assets/apollo-logo.png";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: 20,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.grey[300], 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.grey[300], 0.25),
   },
   marginRight: theme.spacing(2),
   width: "100%",
@@ -70,16 +70,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 // Navigation items
 const navItems = [
-  { name: "Home", path: "/reader/dashboard" },
-  { name: "My Library", path: "../library/dashboard" },
-  { name: "Explore", path: "../Explore/dashboard" },
+  { name: "Home", path: "/publisher/dashboard" },
+  { name: "Analytics", path: "/publisher/analytics" },
 ];
 
 interface HeaderProps {
   toggleColorMode: () => void;
 }
 
-export default function Header({ toggleColorMode }: HeaderProps) {
+export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -111,7 +110,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
       </Box>
       <Divider sx={{ my: 2 }} />
 
-      {/* Search Bar (Added to Mobile Menu) */}
+      {/* Search Bar in Mobile Menu */}
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
@@ -140,10 +139,10 @@ export default function Header({ toggleColorMode }: HeaderProps) {
     <Slide appear={false} direction="down" in={!trigger}>
       <AppBar
         position="fixed"
-        color="inherit"
         elevation={isScrolled ? 4 : 0}
         sx={{
-          bgcolor: isScrolled ? "background.default" : "transparent",
+          bgcolor: "white", // ✅ Set Navbar background to white
+          color: "black", // ✅ Set text color to black
           transition: theme.transitions.create(["background-color", "box-shadow"]),
         }}
       >
@@ -167,7 +166,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
           {!isMobile && (
             <Box sx={{ display: "flex", ml: 4 }}>
               {navItems.map((item) => (
-                <Button key={item.name} component={Link} to={item.path} sx={{ color: "inherit", mx: 0.5 }}>
+                <Button key={item.name} component={Link} to={item.path} sx={{ color: "black", mx: 0.5 }}>
                   {item.name}
                 </Button>
               ))}
@@ -186,14 +185,14 @@ export default function Header({ toggleColorMode }: HeaderProps) {
 
           {/* Cart Icon */}
           <IconButton color="inherit">
-            <Badge badgeContent={2} color="error">
-              <ShoppingCartIcon />
+            <Badge badgeContent={3} color="error">
+              <ShoppingCartIcon sx={{ color: "black" }} />
             </Badge>
           </IconButton>
 
           {/* Theme Toggle Button */}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme.palette.mode === "dark" ? <Brightness7Icon sx={{ color: "black" }} /> : <Brightness4Icon />}
           </IconButton>
 
           {/* Profile Button */}

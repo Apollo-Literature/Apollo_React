@@ -1,4 +1,6 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useMemo } from "react";
 import {
   Box,
   Container,
@@ -6,12 +8,13 @@ import {
   ThemeProvider,
   createTheme,
   PaletteMode,
+  Typography,
 } from "@mui/material";
-import Header from "../../components/publisher/Header";
-import Footer from "../../components/publisher/Footer";
-import PublisherHeroSection from "../../components/publisher/PublisherHeroSection";
-import MyBooks from "../../components/publisher/MyBooks";
+import Header from "../../../components/reader/Header";
+import Footer from "../../../components/reader/Footer";
+import BackgroundText from "../../../components/reader/BackgroundText";
 
+// Define theme design tokens
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
     mode,
@@ -19,18 +22,12 @@ const getDesignTokens = (mode: PaletteMode) => ({
       ? {
           primary: { main: "#6247aa" },
           secondary: { main: "#ff7f7f" },
-          background: {
-            default: "#f0f4f8",
-            paper: "#ffffff",
-          },
+          background: { default: "#f0f4f8", paper: "#ffffff" },
         }
       : {
           primary: { main: "#9d8cd6" },
           secondary: { main: "#ff9999" },
-          background: {
-            default: "#1a1a2e",
-            paper: "#16213e",
-          },
+          background: { default: "#1a1a2e", paper: "#16213e" },
         }),
   },
   typography: {
@@ -41,9 +38,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
   },
   components: {
     MuiButton: {
-      styleOverrides: {
-        root: { borderRadius: 8 },
-      },
+      styleOverrides: { root: { borderRadius: 8 } },
     },
     MuiCard: {
       styleOverrides: {
@@ -60,11 +55,13 @@ const getDesignTokens = (mode: PaletteMode) => ({
   },
 });
 
-function PublisherDashboard() {
+const ExplorePage = () => {
   const [mode, setMode] = useState<PaletteMode>("light");
-  const theme = createTheme(getDesignTokens(mode));
+
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   const toggleColorMode = () =>
-    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   return (
     <ThemeProvider theme={theme}>
@@ -78,19 +75,28 @@ function PublisherDashboard() {
           color: "text.primary",
         }}
       >
+        {/* Header receives the toggleColorMode function */}
         <Header toggleColorMode={toggleColorMode} />
-        <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
-          <Container maxWidth={false} disableGutters>
-            <PublisherHeroSection />
-            <Container maxWidth="xl" sx={{ py: 4 }}>
-              <MyBooks />
-            </Container>
+        <BackgroundText />
+
+        <Box component="main" sx={{ flexGrow: 1, overflow: "hidden", py: 6 }}>
+          <Container maxWidth="xl" disableGutters sx={{ textAlign: "center" }}>
+            {/* Explore Page Content */}
+            <Typography variant="h3" gutterBottom fontWeight="bold">
+              Explore Our Collection
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+              Discover new items, books, and content to enhance your experience.
+            </Typography>
+
+            {/* Add any additional content or components here */}
           </Container>
         </Box>
+
         <Footer />
       </Box>
     </ThemeProvider>
   );
-}
+};
 
-export default PublisherDashboard;
+export default ExplorePage;

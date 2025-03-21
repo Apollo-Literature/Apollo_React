@@ -15,6 +15,7 @@ export default function UploadBook() {
         }
     };
 
+    
     const handleUpload = () => {
         // Handle book upload logic here 
         console.log("Uploading book:", newBook);
