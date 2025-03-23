@@ -53,7 +53,7 @@ export default function BookCard({ book, onAIFeatureClick }: BookCardProps) {
         <Typography variant="body2" color="text.secondary" gutterBottom>
           by <strong>{book.author}</strong>
         </Typography>
-        <Box sx={{ mb: 2, display: 'flex', flexWrap: 'wrap' }}>
+          <Box sx={{ mb: 2, display: 'flex', flexWrap: 'wrap' }}>
           {book.categories.map((category) => (
             <Chip key={category} label={category} size="small" sx={{ mr: 0.5, mb: 0.5, bgcolor: 'primary.light' }} />
           ))}
