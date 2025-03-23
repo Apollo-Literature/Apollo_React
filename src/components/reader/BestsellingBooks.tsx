@@ -22,11 +22,17 @@ import axios from "axios";
 const MotionCard = motion(Card);
 
 interface Book {
-  id: number;
+  bookId: number;
   title: string;
   author: string;
-  coverImage: string;
-  downloadUrl: string;
+  description: string;
+  isbn: string;
+  publicationDate: string;
+  pageCount: number;
+  language: string;
+  price: number;
+  thumbnail: string; // Thumbnail URL
+  url: string; // Download URL
 }
 
 export default function BestsellingBooks() {
@@ -42,15 +48,24 @@ export default function BestsellingBooks() {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/books/all?page=0&size=30&sort=title,asc"
+          "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/all?page=0&size=30&sort=title,asc"
         );
+        const fetchedBooks = (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (response.data as { content: any[] }).content || []
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const fetchedBooks = ((response.data as { content: any[] }).content || []).map((book: any) => ({
-          id: book.id,
+        ).map((book: any) => ({
+          bookId: book.bookId,
           title: book.title,
           author: book.author,
-          coverImage: book.coverImage || "https://via.placeholder.com/150",
-          downloadUrl: book.downloadUrl || "#",
+          description: book.description,
+          isbn: book.isbn,
+          publicationDate: book.publicationDate,
+          pageCount: book.pageCount,
+          language: book.language,
+          price: book.price,
+          thumbnail: book.thumbnail, // Use the thumbnail URL from the backend
+          url: book.url,
         }));
         setBooks(fetchedBooks);
       } catch (error) {
@@ -106,7 +121,7 @@ export default function BestsellingBooks() {
 
       <Grid container spacing={3}>
         {displayedBooks.map((book, index) => (
-          <Grid item key={book.id} xs={6} sm={4} md={2.4}>
+          <Grid item key={book.bookId} xs={6} sm={4} md={2.4}>
             <MotionCard
               elevation={3}
               sx={{
@@ -127,12 +142,15 @@ export default function BestsellingBooks() {
             >
               <CardMedia
                 component="img"
-                image={book.coverImage}
+                image={book.thumbnail} // Display the book's thumbnail
                 alt={book.title}
                 sx={{ height: 250, objectFit: "cover" }}
               />
               <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "medium", mb: 0.5 }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: "medium", mb: 0.5 }}
+                >
                   {book.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -140,13 +158,17 @@ export default function BestsellingBooks() {
                 </Typography>
               </CardContent>
 
-              <Stack direction="row" spacing={1} sx={{ p: 2, justifyContent: "center" }}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ p: 2, justifyContent: "center" }}
+              >
                 <Button
                   variant="outlined"
                   color="primary"
                   size="small"
                   sx={{ flex: 1 }}
-                  onClick={() => downloadBook(book.downloadUrl)}
+                  onClick={() => downloadBook(book.url)}
                 >
                   Read
                 </Button>
@@ -186,7 +208,11 @@ export default function BestsellingBooks() {
               <Button onClick={() => setOpenBuyPopup(false)} color="primary">
                 Cancel
               </Button>
-              <Button onClick={confirmPurchase} color="secondary" variant="contained">
+              <Button
+                onClick={confirmPurchase}
+                color="secondary"
+                variant="contained"
+              >
                 Buy Now
               </Button>
             </DialogActions>

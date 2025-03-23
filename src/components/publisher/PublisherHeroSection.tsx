@@ -1,5 +1,7 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { createClient } from "@supabase/supabase-js";
 import {
   Box,
   Typography,
@@ -9,91 +11,170 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Snackbar,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
-import { BookData } from "../../services/BookService";
+
+// Supabase config
+const supabaseUrl = "https://shzfpsvdewmvughchoun.supabase.co";
+const supabaseAnonKey = "YOUR_SUPABASE_ANON_KEY";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 function PublisherHeroSection() {
   const [openDialog, setOpenDialog] = useState(false);
-  const [bookData, setBookData] = useState<BookData>({
+  const [isUploading, setIsUploading] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const [bookData, setBookData] = useState({
     title: "",
     author: "",
-    category: "",
     description: "",
-    price: "",
-    publishedDate: "",
     isbn: "",
-    language: "",
+    publicationDate: "",
     pageCount: "",
-    tags: "",
-    visibility: "public",
-    thumbnail: null,
-    file: null,
+    language: "",
+    price: "",
+    thumbnail: null as File | null,
+    file: null as File | null,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "thumbnail" || e.target.name === "file") {
-      setBookData({
-        ...bookData,
-        [e.target.name]: e.target.files?.[0] || null,
-      });
-    } else {
-      setBookData({ ...bookData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setAlertMessage("You must be logged in to upload a book.");
+      setAlertSeverity("error");
+      setOpenAlert(true);
+    }
+  }, []);
+
+  const validateToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.exp * 1000 > Date.now();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+      return false;
     }
   };
 
-  const handleDialogOpen = () => setOpenDialog(true);
-  const handleDialogClose = () => setOpenDialog(false);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
+    setBookData((prev) => ({
+      ...prev,
+      [name]:
+        name === "thumbnail" || name === "file" ? files?.[0] || null : value,
+    }));
+  };
+
+  const uploadToSupabase = async (file: File, bucket: string) => {
+    const ext = file.name.split(".").pop();
+    const path = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${ext}`;
+    const { error } = await supabase.storage.from(bucket).upload(path, file);
+    if (error) throw new Error(error.message);
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    return data.publicUrl;
+  };
 
   const handleFormSubmit = async () => {
-    if (!bookData.title || !bookData.author) {
-      alert("Please fill all fields!");
+    if (!validateToken()) {
+      setAlertMessage("Token expired. Please log in again.");
+      setAlertSeverity("error");
+      setOpenAlert(true);
       return;
     }
 
+    const {
+      title,
+      author,
+      description,
+      publicationDate,
+      pageCount,
+      language,
+      price,
+      thumbnail,
+      file,
+    } = bookData;
+
+    if (
+      !title ||
+      !author ||
+      !description ||
+      !publicationDate ||
+      !pageCount ||
+      !language ||
+      !price ||
+      !thumbnail ||
+      !file
+    ) {
+      setAlertMessage("Please fill all required fields.");
+      setAlertSeverity("error");
+      setOpenAlert(true);
+      return;
+    }
+
+    setIsUploading(true);
     try {
-      const formData = new FormData();
+      const token = localStorage.getItem("token");
 
-      // Append file data
-      if (bookData.file) formData.append("file", bookData.file);
-      if (bookData.thumbnail) formData.append("thumbnail", bookData.thumbnail);
-
-      // Append other book data
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming you store the token in localStorage
-        },
-      };
+      const thumbnailUrl = await uploadToSupabase(thumbnail, "thumbnails");
+      const fileUrl = await uploadToSupabase(file, "books");
 
       const response = await axios.post(
-        "http://localhost:8080/api/v1/books/add-book",
-        formData,
-        config
+        "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/add-book",
+        {
+          title,
+          author,
+          description,
+          isbn: bookData.isbn,
+          publicationDate,
+          pageCount: parseInt(pageCount),
+          language,
+          price: parseFloat(price),
+          thumbnailUrl,
+          fileUrl,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.status === 200 || response.status === 201) {
-        alert("Book uploaded successfully!");
+        setAlertMessage("Book uploaded successfully!");
+        setAlertSeverity("success");
         setBookData({
           title: "",
           author: "",
-          category: "",
           description: "",
-          price: "",
-          publishedDate: "",
           isbn: "",
-          language: "",
+          publicationDate: "",
           pageCount: "",
-          tags: "",
-          visibility: "public",
+          language: "",
+          price: "",
           thumbnail: null,
           file: null,
         });
         setOpenDialog(false);
+      } else {
+        throw new Error("Upload failed");
       }
-    } catch (error) {
-      console.error("Error uploading book:", error);
-      alert("Failed to upload book. Please try again.");
+    } catch (err: any) {
+      console.error(err);
+      setAlertMessage(err.message || "Upload failed. Please try again.");
+      setAlertSeverity("error");
+    } finally {
+      setIsUploading(false);
+      setOpenAlert(true);
     }
   };
 
@@ -111,19 +192,19 @@ function PublisherHeroSection() {
         Welcome, Publisher!
       </Typography>
       <Typography variant="h6" sx={{ mb: 3 }}>
-        Manage your books, track your sales, and grow your readership.
+        Add your new books and grow your readership.
       </Typography>
       <Button
         variant="contained"
         color="secondary"
-        size="large"
-        onClick={handleDialogOpen}
+        onClick={() => setOpenDialog(true)}
       >
         Add New Book
       </Button>
+
       <Dialog
         open={openDialog}
-        onClose={handleDialogClose}
+        onClose={() => setOpenDialog(false)}
         maxWidth="md"
         fullWidth
       >
@@ -131,77 +212,77 @@ function PublisherHeroSection() {
         <DialogContent>
           <Box sx={{ display: "grid", gap: 2, py: 2 }}>
             <TextField
-              fullWidth
-              label="Book Title"
+              label="Title"
               name="title"
+              fullWidth
               value={bookData.title}
               onChange={handleChange}
               required
             />
             <TextField
-              fullWidth
-              label="Author Name"
+              label="Author"
               name="author"
+              fullWidth
               value={bookData.author}
               onChange={handleChange}
               required
             />
             <TextField
+              label="Description"
+              name="description"
               fullWidth
               multiline
               rows={3}
-              label="Description"
-              name="description"
               value={bookData.description}
               onChange={handleChange}
               required
             />
             <TextField
-              fullWidth
-              label="Price"
-              type="number"
-              name="price"
-              value={bookData.price}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              fullWidth
-              type="date"
-              name="publishedDate"
-              value={bookData.publishedDate}
-              onChange={handleChange}
-              required
-              InputLabelProps={{ shrink: true }}
-              label="Published Date"
-            />
-            <TextField
-              fullWidth
               label="ISBN"
               name="isbn"
+              fullWidth
               value={bookData.isbn}
               onChange={handleChange}
             />
             <TextField
+              label="Publication Date"
+              name="publicationDate"
+              type="date"
               fullWidth
+              value={bookData.publicationDate}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+              required
+            />
+            <TextField
+              label="Page Count"
+              name="pageCount"
+              type="number"
+              fullWidth
+              value={bookData.pageCount}
+              onChange={handleChange}
+              required
+            />
+            <TextField
               label="Language"
               name="language"
+              fullWidth
               value={bookData.language}
               onChange={handleChange}
               required
             />
             <TextField
-              fullWidth
-              label="Page Count"
+              label="Price"
+              name="price"
               type="number"
-              name="pageCount"
-              value={bookData.pageCount}
+              fullWidth
+              value={bookData.price}
               onChange={handleChange}
               required
             />
             <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                Book Thumbnail
+              <Typography variant="subtitle2">
+                Cover Image (JPEG/PNG)
               </Typography>
               <input
                 type="file"
@@ -212,9 +293,7 @@ function PublisherHeroSection() {
               />
             </Box>
             <Box>
-              <Typography variant="subtitle2" gutterBottom>
-                Book File (PDF or EPUB)
-              </Typography>
+              <Typography variant="subtitle2">Book File (PDF/EPUB)</Typography>
               <input
                 type="file"
                 name="file"
@@ -226,14 +305,33 @@ function PublisherHeroSection() {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
+          <Button onClick={() => setOpenDialog(false)} disabled={isUploading}>
             Cancel
           </Button>
-          <Button onClick={handleFormSubmit} color="primary">
-            Submit
+          <Button
+            onClick={handleFormSubmit}
+            variant="contained"
+            disabled={isUploading}
+            startIcon={isUploading ? <CircularProgress size={20} /> : null}
+          >
+            {isUploading ? "Uploading..." : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={() => setOpenAlert(false)}
+      >
+        <Alert
+          onClose={() => setOpenAlert(false)}
+          severity={alertSeverity}
+          sx={{ width: "100%" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
