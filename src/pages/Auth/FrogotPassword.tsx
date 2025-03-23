@@ -13,7 +13,7 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+     <Container component="main" maxWidth="sm">
       <Paper elevation={6} sx={{ p: 4, mt: 8, borderRadius: 3 }}>
         <Typography variant="h4" gutterBottom>
           Forgot Password
