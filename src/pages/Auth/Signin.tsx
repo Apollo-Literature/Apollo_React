@@ -10,6 +10,10 @@ import {
   Box,
   InputAdornment,
   Alert,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { Lock, Mail } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,6 +22,7 @@ interface LoginFormData {
   email: string;
   password: string;
   rememberMe: boolean;
+  role: "READER" | "PUBLISHER";
 }
 
 const SigninPage: React.FC = () => {
@@ -27,6 +32,7 @@ const SigninPage: React.FC = () => {
     email: "",
     password: "",
     rememberMe: false,
+    role: "READER",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,11 +49,17 @@ const SigninPage: React.FC = () => {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
 
-      // Navigate to the correct page after login
-      navigate("/reader/dashboard"); // Change to your actual route
+      // Redirect to dashboard based on selected role
+      if (formData.role === "READER") {
+        navigate("/reader/dashboard");
+      } else {
+        navigate("/publisher/dashboard");
+      }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      const errorMessage = err?.response?.data?.message || "Login failed. Please try again.";
+      const errorMessage =
+        err?.response?.data?.message || "Login failed. Please try again.";
       setError(errorMessage);
     }
   };
@@ -86,6 +98,7 @@ const SigninPage: React.FC = () => {
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
+
           <TextField
             fullWidth
             label="Password"
@@ -104,11 +117,29 @@ const SigninPage: React.FC = () => {
             required
           />
 
+          {/* Role selection */}
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="role-label">Select Role</InputLabel>
+            <Select
+              labelId="role-label"
+              value={formData.role}
+              label="Select Role"
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value as "READER" | "PUBLISHER" })
+              }
+            >
+              <MenuItem value="READER">Reader</MenuItem>
+              <MenuItem value="PUBLISHER">Publisher</MenuItem>
+            </Select>
+          </FormControl>
+
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box display="flex" alignItems="center">
               <Checkbox
                 checked={formData.rememberMe}
-                onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({ ...formData, rememberMe: e.target.checked })
+                }
               />
               <Typography variant="body2">Remember me</Typography>
             </Box>
