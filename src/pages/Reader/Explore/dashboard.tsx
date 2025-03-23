@@ -9,10 +9,14 @@ import {
   createTheme,
   PaletteMode,
   Typography,
+  Button,
+  Stack,
+  CircularProgress,
 } from "@mui/material";
 import Header from "../../../components/reader/Header";
 import Footer from "../../../components/reader/Footer";
 import BackgroundText from "../../../components/reader/BackgroundText";
+import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 
 // Define theme design tokens
 const getDesignTokens = (mode: PaletteMode) => ({
@@ -57,11 +61,38 @@ const getDesignTokens = (mode: PaletteMode) => ({
 
 const ExplorePage = () => {
   const [mode, setMode] = useState<PaletteMode>("light");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  interface Book {
+    id: number;
+    title: string;
+  }
+
+  const [results, setResults] = useState<Book[]>([]);
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
   const toggleColorMode = () =>
     setMode((prev) => (prev === "light" ? "dark" : "light"));
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+
+  const handleSearch = async () => {
+    if (!selectedFile) return;
+    setIsSearching(true);
+    // Simulate AI model request delay
+    setTimeout(() => {
+      // Simulated AI results
+      setResults([
+        { id: 1, title: "Mystery of the Scanned Cover" },
+        { id: 2, title: "AI Inspired Book" },
+        { id: 3, title: "Another Book Match" },
+      ]);
+      setIsSearching(false);
+    }, 2000);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,21 +106,67 @@ const ExplorePage = () => {
           color: "text.primary",
         }}
       >
-        {/* Header receives the toggleColorMode function */}
         <Header toggleColorMode={toggleColorMode} />
         <BackgroundText />
 
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden", py: 6 }}>
           <Container maxWidth="xl" disableGutters sx={{ textAlign: "center" }}>
-            {/* Explore Page Content */}
+            <br></br>
+            <br></br>
             <Typography variant="h3" gutterBottom fontWeight="bold">
-              Explore Our Collection
+              Explore with AI
             </Typography>
             <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
-              Discover new items, books, and content to enhance your experience.
+              Upload an image or book cover to discover similar titles.
             </Typography>
 
-            {/* Add any additional content or components here */}
+            <Stack spacing={3} alignItems="center">
+              <Button
+                variant="contained"
+                component="label"
+                startIcon={<ImageSearchIcon />}
+              >
+                Upload Book Cover
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+              </Button>
+
+              {selectedFile && (
+                <Typography variant="body1">
+                  Selected: {selectedFile.name}
+                </Typography>
+              )}
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSearch}
+                disabled={!selectedFile || isSearching}
+              >
+                {isSearching ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Search Similar Books"
+                )}
+              </Button>
+
+              {results.length > 0 && (
+                <Box mt={4}>
+                  <Typography variant="h5" gutterBottom>
+                    Similar Books Found:
+                  </Typography>
+                  <ul>
+                    {results.map((book) => (
+                      <li key={book.id}>{book.title}</li>
+                    ))}
+                  </ul>
+                </Box>
+              )}
+            </Stack>
           </Container>
         </Box>
 
