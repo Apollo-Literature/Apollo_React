@@ -6,7 +6,6 @@ import HeroSection from "../../components/reader/HeroSection";
 import PopularAuthors from "../../components/reader/PopularAuthors";
 import BestsellingBooks from "../../components/reader/BestsellingBooks";
 import Footer from "../../components/reader/Footer";
-import LatestBooks from "../../components/reader/LatestBooks";
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -81,7 +80,6 @@ function Dashboard() {
             <Container maxWidth="xl" sx={{ py: 4 }}>
               <PopularAuthors />
               <BestsellingBooks />
-              <LatestBooks />
             </Container>
           </Container>
         </Box>

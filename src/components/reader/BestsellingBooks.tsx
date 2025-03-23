@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -17,6 +17,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const MotionCard = motion(Card);
 
@@ -24,26 +25,41 @@ interface Book {
   id: number;
   title: string;
   author: string;
-  image: string;
+  coverImage: string;
+  downloadUrl: string;
 }
-
-// Dummy Data for Bestselling Books (30 Books)
-const books: Book[] = Array.from({ length: 30 }, (_, i) => ({
-  id: i + 1,
-  title: `Bestseller Book ${i + 1}`,
-  author: `Author ${i + 1}`,
-  image:
-    "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-}));
 
 export default function BestsellingBooks() {
   const theme = useTheme();
+  const [books, setBooks] = useState<Book[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [openBuyPopup, setOpenBuyPopup] = useState(false);
 
-  // Show only top 6 books initially, show top 30 when "View All" is clicked
   const displayedBooks = showAll ? books : books.slice(0, 5);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/books/all?page=0&size=30&sort=title,asc"
+        );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const fetchedBooks = ((response.data as { content: any[] }).content || []).map((book: any) => ({
+          id: book.id,
+          title: book.title,
+          author: book.author,
+          coverImage: book.coverImage || "https://via.placeholder.com/150",
+          downloadUrl: book.downloadUrl || "#",
+        }));
+        setBooks(fetchedBooks);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+
+    fetchBooks();
+  }, []);
 
   const handleBuyBook = (book: Book) => {
     setSelectedBook(book);
@@ -57,6 +73,14 @@ export default function BestsellingBooks() {
     }
   };
 
+  const downloadBook = (url: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "";
+    link.target = "_blank";
+    link.click();
+  };
+
   return (
     <Box sx={{ py: 6, px: { xs: 2, md: 6 } }}>
       <Box
@@ -67,24 +91,13 @@ export default function BestsellingBooks() {
           mb: 4,
         }}
       >
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{
-            fontWeight: "bold",
-          }}
-        >
+        <Typography variant="h4" component="h2" sx={{ fontWeight: "bold" }}>
           Books
         </Typography>
-
         <Button
           variant="contained"
           color="secondary"
-          sx={{
-            borderRadius: 4,
-            px: 3,
-            py: 1,
-          }}
+          sx={{ borderRadius: 4, px: 3, py: 1 }}
           onClick={() => setShowAll(!showAll)}
         >
           {showAll ? "Show Less" : "View All"}
@@ -114,19 +127,12 @@ export default function BestsellingBooks() {
             >
               <CardMedia
                 component="img"
-                image={book.image}
+                image={book.coverImage}
                 alt={book.title}
-                sx={{
-                  height: 250,
-                  objectFit: "cover",
-                }}
+                sx={{ height: 250, objectFit: "cover" }}
               />
               <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                <Typography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ fontWeight: "medium", mb: 0.5 }}
-                >
+                <Typography variant="subtitle1" sx={{ fontWeight: "medium", mb: 0.5 }}>
                   {book.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -134,20 +140,15 @@ export default function BestsellingBooks() {
                 </Typography>
               </CardContent>
 
-              {/* View & Buy Buttons */}
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ p: 2, justifyContent: "center" }}
-              >
+              <Stack direction="row" spacing={1} sx={{ p: 2, justifyContent: "center" }}>
                 <Button
                   variant="outlined"
                   color="primary"
                   size="small"
                   sx={{ flex: 1 }}
-                  onClick={() => alert(`Viewing ${book.title}`)}
+                  onClick={() => downloadBook(book.downloadUrl)}
                 >
-                  View
+                  Read
                 </Button>
                 <Button
                   variant="contained"
@@ -164,7 +165,7 @@ export default function BestsellingBooks() {
         ))}
       </Grid>
 
-      {/* Buy Book Confirmation Popup */}
+      {/* Buy Confirmation Popup */}
       <Dialog
         open={openBuyPopup}
         onClose={() => setOpenBuyPopup(false)}
@@ -185,11 +186,7 @@ export default function BestsellingBooks() {
               <Button onClick={() => setOpenBuyPopup(false)} color="primary">
                 Cancel
               </Button>
-              <Button
-                onClick={confirmPurchase}
-                color="secondary"
-                variant="contained"
-              >
+              <Button onClick={confirmPurchase} color="secondary" variant="contained">
                 Buy Now
               </Button>
             </DialogActions>
