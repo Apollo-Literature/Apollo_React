@@ -74,7 +74,7 @@ export default function BestsellingBooks() {
             fontWeight: "bold",
           }}
         >
-          Bestselling Books
+          Books
         </Typography>
 
         <Button
@@ -135,7 +135,11 @@ export default function BestsellingBooks() {
               </CardContent>
 
               {/* View & Buy Buttons */}
-              <Stack direction="row" spacing={1} sx={{ p: 2, justifyContent: "center" }}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ p: 2, justifyContent: "center" }}
+              >
                 <Button
                   variant="outlined"
                   color="primary"
@@ -161,13 +165,19 @@ export default function BestsellingBooks() {
       </Grid>
 
       {/* Buy Book Confirmation Popup */}
-      <Dialog open={openBuyPopup} onClose={() => setOpenBuyPopup(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={openBuyPopup}
+        onClose={() => setOpenBuyPopup(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         {selectedBook && (
           <>
             <DialogTitle>Confirm Purchase</DialogTitle>
             <DialogContent>
               <Typography>
-                Are you sure you want to buy "<strong>{selectedBook.title}</strong>" by{" "}
+                Are you sure you want to buy "
+                <strong>{selectedBook.title}</strong>" by{" "}
                 <strong>{selectedBook.author}</strong>?
               </Typography>
             </DialogContent>
@@ -175,7 +185,11 @@ export default function BestsellingBooks() {
               <Button onClick={() => setOpenBuyPopup(false)} color="primary">
                 Cancel
               </Button>
-              <Button onClick={confirmPurchase} color="secondary" variant="contained">
+              <Button
+                onClick={confirmPurchase}
+                color="secondary"
+                variant="contained"
+              >
                 Buy Now
               </Button>
             </DialogActions>
