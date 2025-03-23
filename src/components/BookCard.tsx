@@ -39,7 +39,7 @@ export default function BookCard({ book, onAIFeatureClick }: BookCardProps) {
 
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', borderRadius: 3, boxShadow: 3 }}>
-      <CardMedia
+       <CardMedia
         component="img"
         height="200"
         image={book.coverUrl}
