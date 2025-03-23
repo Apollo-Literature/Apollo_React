@@ -93,7 +93,7 @@ export default function Footer() {
                   flexGrow: 1,
                   backgroundColor: theme.palette.background.paper,
                   color: theme.palette.text.primary,
-                }}
+                
               />
               <button
                 type="submit"
