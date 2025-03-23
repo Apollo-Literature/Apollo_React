@@ -1,4 +1,4 @@
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import ProfileImage from "./ProfileImage";
 import ProfileInfo from "./ProfileInfo";

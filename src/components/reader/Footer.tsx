@@ -65,42 +65,42 @@ export default function Footer() {
           </Grid>
 
           <Grid item xs={6} sm={2}>
-            <Typography variant="subtitle1" color="text.primary" gutterBottom>
+            {/* <Typography variant="subtitle1" color="text.primary" gutterBottom>
               Explore
-            </Typography>
+            </Typography> */}
             {/* Combine MUI Link with React Router Link */}
-            <MuiLink
+            {/* <MuiLink
               component={RouterLink}
               to="/"
               color="inherit"
               display="block"
             >
               Home
-            </MuiLink>
-            <MuiLink
+            </MuiLink> */}
+            {/* <MuiLink
               component={RouterLink}
               to="/explore/dashboard"
               color="inherit"
               display="block"
             >
               E-books
-            </MuiLink>
-            <MuiLink
+            </MuiLink> */}
+            {/* <MuiLink
               component={RouterLink}
               to="/library/dashboard"
               color="inherit"
               display="block"
             >
               Audiobooks
-            </MuiLink>
-            <MuiLink
+            </MuiLink> */}
+            {/* <MuiLink
               component={RouterLink}
               to="/authors"
               color="inherit"
               display="block"
             >
               Authors
-            </MuiLink>
+            </MuiLink> */}
           </Grid>
 
           <Grid item xs={6} sm={2}>
@@ -116,30 +116,30 @@ export default function Footer() {
             >
               About Us
             </MuiLink>
-            <MuiLink
+            {/* <MuiLink
               component={RouterLink}
               to="/contact"
               color="inherit"
               display="block"
             >
               Contact
-            </MuiLink>
-            <MuiLink
+            </MuiLink> */}
+            {/* <MuiLink
               component={RouterLink}
               to="/careers"
               color="inherit"
               display="block"
             >
               Careers
-            </MuiLink>
-            <MuiLink
+            </MuiLink> */}
+            {/* <MuiLink
               component={RouterLink}
               to="/blog"
               color="inherit"
               display="block"
             >
               Blog
-            </MuiLink>
+            </MuiLink> */}
           </Grid>
 
           <Grid item xs={12} sm={4}>
@@ -194,7 +194,7 @@ export default function Footer() {
           </Typography>
           <Box>
             {/* Combine MUI Link with React Router Link */}
-            <MuiLink
+            {/* <MuiLink
               component={RouterLink}
               to="/privacy-policy"
               color="inherit"
@@ -217,7 +217,7 @@ export default function Footer() {
               sx={{ pl: 2 }}
             >
               Cookie Policy
-            </MuiLink>
+            </MuiLink> */}
           </Box>
         </Box>
       </Container>

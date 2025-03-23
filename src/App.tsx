@@ -10,6 +10,7 @@ import ReaderDashboard from "./pages/Reader/dashboard";
 import Library from "./pages/Reader/Library/dashboard";
 import Explore from "./pages/Reader/Explore/dashboard";
 import AboutUs from "./pages/aboutus/dashboard";
+import Profile from "./components/other/Profile";
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,19 @@ const App: React.FC = () => {
         <Route path="/library/dashboard" element={<Library />} />
         <Route path="/explore/dashboard" element={<Explore />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/other/profile" element={<Profile/>}/>
+        <Route
+            path="*"
+            element={
+              <div style={{ textAlign: "center", marginTop: "100px" }}>
+                <h1 style={{ fontSize: "2.5rem", color: "#555" }}>🚧 Page Under Construction</h1>
+                <p style={{ fontSize: "1.2rem", color: "#777" }}>
+                  This page is not available yet. <br /> We are working hard to bring it to you soon!
+                </p>
+              </div>
+            }
+          />
+
       </Routes>
     </Router>
   );

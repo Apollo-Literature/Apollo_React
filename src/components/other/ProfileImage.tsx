@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import { motion } from "framer-motion";
-import React from "react"; // Import React
 
 // Define the interface for the props
 interface ProfileImageProps {

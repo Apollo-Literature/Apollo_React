@@ -54,9 +54,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
 
 const Dashboard = () => {
   const [mode, setMode] = useState<PaletteMode>("light");
-
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
   const toggleColorMode = () =>
     setMode((prev) => (prev === "light" ? "dark" : "light"));
 
