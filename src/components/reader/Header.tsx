@@ -253,7 +253,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
             variant="contained"
             color="primary"
             component={Link}
-            to="../other/PersonCard"
+            to="../other/Profile"
             sx={{
               ml: 2,
               borderRadius: 2,
