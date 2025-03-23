@@ -10,6 +10,7 @@ import ReaderDashboard from "./pages/Reader/dashboard";
 import Library from "./pages/Reader/Library/dashboard";
 import Explore from "./pages/Reader/Explore/dashboard";
 import AboutUs from "./pages/aboutus/dashboard";
+import PersonCard from "./components/other/PersonCard";
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Route path="/library/dashboard" element={<Library />} />
         <Route path="/explore/dashboard" element={<Explore />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/other/PersonCard" element={<PersonCard name={""} role={""} description={""} imageSrc={""} socialMediaLinks={[]} />} />
       </Routes>
     </Router>
   );

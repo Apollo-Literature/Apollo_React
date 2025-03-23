@@ -44,11 +44,15 @@ const SignupPage: React.FC = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/auth/register", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/auth/register",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       alert("Signup successful!");
       console.log(response.data);
@@ -75,7 +79,9 @@ const SignupPage: React.FC = () => {
             variant="outlined"
             margin="normal"
             value={formData.firstName}
-            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, firstName: e.target.value })
+            }
             required
           />
           <TextField
@@ -84,7 +90,9 @@ const SignupPage: React.FC = () => {
             variant="outlined"
             margin="normal"
             value={formData.lastName}
-            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, lastName: e.target.value })
+            }
             required
           />
           <TextField
@@ -95,7 +103,9 @@ const SignupPage: React.FC = () => {
             margin="normal"
             InputProps={{ startAdornment: <Mail size={20} /> }}
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             required
           />
           <TextField
@@ -106,7 +116,9 @@ const SignupPage: React.FC = () => {
             margin="normal"
             InputProps={{ startAdornment: <Lock size={20} /> }}
             value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             required
           />
           <TextField
@@ -116,7 +128,9 @@ const SignupPage: React.FC = () => {
             margin="normal"
             InputLabelProps={{ shrink: true }}
             value={formData.dateOfBirth}
-            onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, dateOfBirth: e.target.value })
+            }
             required
           />
           <TextField
@@ -138,7 +152,7 @@ const SignupPage: React.FC = () => {
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
           Already have an account?{" "}
-          <Link to="/login" style={{ textDecoration: "none", color: "#1976d2" }}>
+          <Link to="/" style={{ textDecoration: "none", color: "#1976d2" }}>
             Sign in
           </Link>
         </Typography>
