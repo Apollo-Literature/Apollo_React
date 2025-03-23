@@ -15,7 +15,7 @@ export default function HeroSection() {
         color: "text.primary",
         overflow: "hidden",
         position: "relative",
-      }}
+      }
     >
       <Container maxWidth="xl">
         <Grid container spacing={2} sx={{ minHeight: "100vh", alignItems: "center" }}>
