@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { Lock, Mail } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
 
 interface LoginFormData {
   email: string;
@@ -53,13 +52,9 @@ const SigninPage: React.FC = () => {
 
       // Navigate to dashboard (you can customize this based on role)
       navigate("/reader/dashboard");
-    } catch (err) {
-      const axiosError = err as AxiosError<unknown>;
-      if (axiosError.response && axiosError.response.data) {
-        setError(axiosError.response.data.message || "Invalid credentials");
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
+    } catch (error) {
+      console.error("Login failed", error);
+      setError("Login failed. Please try again.");
     }
   };
 
