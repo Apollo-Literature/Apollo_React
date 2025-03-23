@@ -109,9 +109,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
     setShowDropdown(true);
     if (query.length >= 2) {
       try {
-        const response = await axios.get<Book[]>(
-          `http://localhost:8080/api/v1/books/search?q=${query}`
-        );
+        const response = await axios.get<Book[]>(`http://localhost:8080/api/v1/books/search?q=${query}`);
         setSearchResults(response.data);
       } catch (error) {
         console.error("Search error:", error);
@@ -166,7 +164,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
         color="inherit"
         elevation={isScrolled ? 4 : 0}
         sx={{
-          bgcolor: isScrolled ? "background.default" : "transparent",
+          bgcolor: isScrolled ? "background.default" : "",
           transition: theme.transitions.create(["background-color", "box-shadow"]),
           zIndex: 1400,
         }}
@@ -232,10 +230,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
                       sx={{ px: 2, py: 1 }}
                       onClick={() => setShowDropdown(false)}
                     >
-                      <ListItemText
-                        primary={book.title}
-                        secondary={book.author || ""}
-                      />
+                      <ListItemText primary={book.title} secondary={book.author || ""} />
                     </ListItem>
                   ))}
                 </Paper>
@@ -277,7 +272,13 @@ export default function Header({ toggleColorMode }: HeaderProps) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{ keepMounted: true }}
-          sx={{ "& .MuiDrawer-paper": { boxSizing: "border-box", width: 280 } }}
+          sx={{
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: 280,
+              zIndex: 1500, // Ensure it's above other content
+            },
+          }}
         >
           {drawer}
         </Drawer>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import axios from "axios";
 import {
@@ -10,13 +11,10 @@ import {
   Box,
   InputAdornment,
   Alert,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
   Fade,
+  IconButton,
 } from "@mui/material";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 
@@ -30,12 +28,10 @@ const globalStyles = `
   }
 `;
 
-
 interface LoginFormData {
   email: string;
   password: string;
   rememberMe: boolean;
-  role: "READER" | "PUBLISHER";
 }
 
 interface LoginResponse {
@@ -71,9 +67,9 @@ const SigninPage: React.FC = () => {
     email: "",
     password: "",
     rememberMe: false,
-    role: "READER",
   });
   const [error, setError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,8 +98,6 @@ const SigninPage: React.FC = () => {
       } else {
         navigate("/reader/dashboard");
       }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const errorMessage = err?.response?.data?.message || "Login failed. Please try again.";
       setError(errorMessage);
@@ -176,12 +170,22 @@ const SigninPage: React.FC = () => {
                   fullWidth
                   label="Password"
                   variant="outlined"
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Toggle password visibility
                   margin="normal"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
                         <Lock size={20} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          edge="end"
+                        >
+                          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </IconButton>
                       </InputAdornment>
                     ),
                   }}
@@ -191,25 +195,6 @@ const SigninPage: React.FC = () => {
                   }
                   required
                 />
-
-                {/* Role selection */}
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="role-label">Select Role</InputLabel>
-                  <Select
-                    labelId="role-label"
-                    value={formData.role}
-                    label="Select Role"
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        role: e.target.value as "READER" | "PUBLISHER",
-                      })
-                    }
-                  >
-                    <MenuItem value="READER">Reader</MenuItem>
-                    <MenuItem value="PUBLISHER">Publisher</MenuItem>
-                  </Select>
-                </FormControl>
 
                 <Box
                   display="flex"

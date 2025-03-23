@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -25,7 +23,6 @@ import {
 } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import apolloLogo from "../../assets/apollo-logo.png";
-
 
 // Navigation items
 const navItems = [
@@ -68,7 +65,6 @@ export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
         </Typography>
       </Box>
       <Divider sx={{ my: 2 }} />
-
 
       <List sx={{ mt: 2 }}>
         {navItems.map((item) => (
@@ -115,7 +111,7 @@ export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
           </Box>
 
           {/* Desktop Navigation */}
-          {!isMobile && (
+          {!isMobile && !mobileOpen && (
             <Box sx={{ display: "flex", ml: 4 }}>
               {navItems.map((item) => (
                 <Button key={item.name} component={Link} to={item.path} sx={{ color: "black", mx: 0.5 }}>
