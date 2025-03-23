@@ -9,6 +9,7 @@ import PublisherDashboard from "./pages/Publisher/dashboard";
 import ReaderDashboard from "./pages/Reader/dashboard";
 import Library from "./pages/Reader/Library/dashboard";
 import Explore from "./pages/Reader/Explore/dashboard";
+import AboutUs from "./pages/aboutus/dashboard";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="/reader/dashboard" element={<ReaderDashboard />} />
         <Route path="/library/dashboard" element={<Library />} />
         <Route path="/explore/dashboard" element={<Explore />} />
+        <Route path="/aboutus" element={<AboutUs />} />
       </Routes>
     </Router>
   );

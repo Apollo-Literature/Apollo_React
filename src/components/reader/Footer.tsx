@@ -1,8 +1,17 @@
-import { Box, Container, Typography, Link, Grid, Divider, useTheme } from "@mui/material"
-import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material"
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Divider,
+  useTheme,
+  Link as MuiLink, // MUI Link
+} from "@mui/material";
+import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom"; // React Router Link
 
 export default function Footer() {
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <Box
@@ -20,21 +29,38 @@ export default function Footer() {
               APOLLO
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Your gateway to endless stories and knowledge. Discover books that inspire, educate, and entertain.
+              Your gateway to endless stories and knowledge. Discover books that
+              inspire, educate, and entertain.
             </Typography>
             <Box sx={{ mt: 2 }}>
-              <Link href="https://www.facebook.com/profile.php?id=61573996170407" color="inherit" sx={{ mr: 2 }}>
+              {/* MUI Link for external social media links */}
+              <MuiLink
+                href="https://www.facebook.com/profile.php?id=61573996170407"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
                 <Facebook />
-              </Link>
-              <Link href="https://x.com/Apollo1568264" color="inherit" sx={{ mr: 2 }}>
+              </MuiLink>
+              <MuiLink
+                href="https://x.com/Apollo1568264"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
                 <Twitter />
-              </Link>
-              <Link href="https://www.instagram.com/apolloonlinelibrary/" color="inherit" sx={{ mr: 2 }}>
+              </MuiLink>
+              <MuiLink
+                href="https://www.instagram.com/apolloonlinelibrary/"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
                 <Instagram />
-              </Link>
-              <Link href="https://www.linkedin.com/in/apollo-lib-305946354/" color="inherit">
+              </MuiLink>
+              <MuiLink
+                href="https://www.linkedin.com/in/apollo-lib-305946354/"
+                color="inherit"
+              >
                 <LinkedIn />
-              </Link>
+              </MuiLink>
             </Box>
           </Grid>
 
@@ -42,36 +68,78 @@ export default function Footer() {
             <Typography variant="subtitle1" color="text.primary" gutterBottom>
               Explore
             </Typography>
-            <Link href="#" color="inherit" display="block">
+            {/* Combine MUI Link with React Router Link */}
+            <MuiLink
+              component={RouterLink}
+              to="/"
+              color="inherit"
+              display="block"
+            >
               Home
-            </Link>
-            <Link href="#" color="inherit" display="block">
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/explore/dashboard"
+              color="inherit"
+              display="block"
+            >
               E-books
-            </Link>
-            <Link href="#" color="inherit" display="block">
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/library/dashboard"
+              color="inherit"
+              display="block"
+            >
               Audiobooks
-            </Link>
-            <Link href="#" color="inherit" display="block">
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/authors"
+              color="inherit"
+              display="block"
+            >
               Authors
-            </Link>
+            </MuiLink>
           </Grid>
 
           <Grid item xs={6} sm={2}>
             <Typography variant="subtitle1" color="text.primary" gutterBottom>
               Company
             </Typography>
-            <Link href="#" color="inherit" display="block">
+            {/* Combine MUI Link with React Router Link */}
+            <MuiLink
+              component={RouterLink}
+              to="/aboutus"
+              color="inherit"
+              display="block"
+            >
               About Us
-            </Link>
-            <Link href="#" color="inherit" display="block">
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/contact"
+              color="inherit"
+              display="block"
+            >
               Contact
-            </Link>
-            <Link href="#" color="inherit" display="block">
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/careers"
+              color="inherit"
+              display="block"
+            >
               Careers
-            </Link>
-            <Link href="#" color="inherit" display="block">
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/blog"
+              color="inherit"
+              display="block"
+            >
               Blog
-            </Link>
+            </MuiLink>
           </Grid>
 
           <Grid item xs={12} sm={4}>
@@ -114,24 +182,45 @@ export default function Footer() {
 
         <Divider sx={{ my: 4 }} />
 
-        <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
           <Typography variant="body2" color="text.secondary">
             &copy; {new Date().getFullYear()} Apollo Books. All rights reserved.
           </Typography>
           <Box>
-            <Link href="#" color="inherit" sx={{ pl: 1 }}>
+            {/* Combine MUI Link with React Router Link */}
+            <MuiLink
+              component={RouterLink}
+              to="/privacy-policy"
+              color="inherit"
+              sx={{ pl: 1 }}
+            >
               Privacy Policy
-            </Link>
-            <Link href="#" color="inherit" sx={{ pl: 2 }}>
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/terms-of-use"
+              color="inherit"
+              sx={{ pl: 2 }}
+            >
               Terms of Use
-            </Link>
-            <Link href="#" color="inherit" sx={{ pl: 2 }}>
+            </MuiLink>
+            <MuiLink
+              component={RouterLink}
+              to="/cookie-policy"
+              color="inherit"
+              sx={{ pl: 2 }}
+            >
               Cookie Policy
-            </Link>
+            </MuiLink>
           </Box>
         </Box>
       </Container>
     </Box>
-  )
+  );
 }
-
