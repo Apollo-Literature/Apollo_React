@@ -1,12 +1,14 @@
 import { useState } from "react";
 import {
   Box,
+  Button,
   Container,
   CssBaseline,
   ThemeProvider,
   createTheme,
   PaletteMode,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import Header from "../../components/publisher/Header";
 import Footer from "../../components/publisher/Footer";
 import PublisherHeroSection from "../../components/publisher/PublisherHeroSection";
@@ -63,6 +65,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
 function PublisherDashboard() {
   const [mode, setMode] = useState<PaletteMode>("light");
   const theme = createTheme(getDesignTokens(mode));
+
   const toggleColorMode = () =>
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
 
@@ -79,14 +82,29 @@ function PublisherDashboard() {
         }}
       >
         <Header toggleColorMode={toggleColorMode} />
+
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
           <Container maxWidth={false} disableGutters>
             <PublisherHeroSection />
+
             <Container maxWidth="xl" sx={{ py: 4 }}>
               <MyBooks />
             </Container>
           </Container>
         </Box>
+            {/* 📌 Add Reader Dashboard Button Here */}
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                component={Link}
+                to="/reader/dashboard"
+                sx={{ textTransform: "none", fontSize: "1rem", px: 4 }}
+              >
+                Go to Reader Dashboard
+              </Button>
+            </Box>
+            <br />
         <Footer />
       </Box>
     </ThemeProvider>
