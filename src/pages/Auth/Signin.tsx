@@ -34,27 +34,21 @@ const SigninPage: React.FC = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const response = await axios.post("http://localhost:8080/api/v1/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
-      // Store token and user info
-      const userData = response.data;
       if (formData.rememberMe) {
-        localStorage.setItem("user", JSON.stringify(userData));
-      } else {
-        sessionStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("user", JSON.stringify(response.data));
       }
 
-      // Navigate to dashboard (you can customize this based on role)
-      navigate("/reader/dashboard");
-    } catch (error) {
-      console.error("Login failed", error);
-      setError("Login failed. Please try again.");
+      // Navigate to the correct page after login
+      navigate("/reader/dashboard"); // Change to your actual route
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const errorMessage = err?.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
     }
   };
 
@@ -89,9 +83,7 @@ const SigninPage: React.FC = () => {
               ),
             }}
             value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
           <TextField
@@ -108,30 +100,19 @@ const SigninPage: React.FC = () => {
               ),
             }}
             value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
           />
 
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <Box display="flex" alignItems="center">
               <Checkbox
                 checked={formData.rememberMe}
-                onChange={(e) =>
-                  setFormData({ ...formData, rememberMe: e.target.checked })
-                }
+                onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
               />
               <Typography variant="body2">Remember me</Typography>
             </Box>
-            <Link
-              to="/forgot-password"
-              style={{ textDecoration: "none", color: "#1976d2" }}
-            >
+            <Link to="/forgot-password" style={{ textDecoration: "none", color: "#1976d2" }}>
               Forgot password?
             </Link>
           </Box>
@@ -143,10 +124,7 @@ const SigninPage: React.FC = () => {
 
         <Typography variant="body2" align="center" sx={{ mt: 3 }}>
           Don't have an account?{" "}
-          <Link
-            to="/signup"
-            style={{ textDecoration: "none", color: "#1976d2" }}
-          >
+          <Link to="/signup" style={{ textDecoration: "none", color: "#1976d2" }}>
             Sign up
           </Link>
         </Typography>
