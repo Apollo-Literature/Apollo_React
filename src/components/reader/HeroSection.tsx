@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Typography, Button, Grid, Container } from "@mui/material"
+import { Box, Typography, Button, Grid, Container, Link } from "@mui/material"
 import { motion } from "framer-motion"
 
 const MotionBox = motion(Box)
@@ -87,36 +87,23 @@ export default function HeroSection() {
               </MotionTypography>
 
               <MotionBox initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
-                <MotionButton
-                  variant="contained"
-                  size="large"
-                  sx={{
-                    mr: 2,
-                    px: 4,
-                    py: 1.5,
-                    borderRadius: 4,
-                    boxShadow: "0 6px 20px rgba(0, 102, 255, 0.3)",
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Join Apollo
-                </MotionButton>
-                <MotionButton
-                  variant="outlined"
-                  size="large"
-                  sx={{
-                    px: 4,
-                    py: 1.5,
-                    borderRadius: 4,
-                    borderColor: "primary.main",
-                    color: "primary.main",
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Learn More
-                </MotionButton>
+              <Link href="https://apollolanding.vercel.app" target="_blank" rel="noopener noreferrer">
+              <MotionButton
+                variant="outlined"
+                size="large"
+                sx={{
+                  px: 4,
+                  py: 1.5,
+                  borderRadius: 4,
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Learn More
+              </MotionButton>
+            </Link>
               </MotionBox>
             </MotionBox>
           </Grid>

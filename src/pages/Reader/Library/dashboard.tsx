@@ -1,9 +1,16 @@
 import { useState, useMemo } from "react";
-import { Box, Container, CssBaseline, ThemeProvider, createTheme, PaletteMode } from "@mui/material";
-import Header from "../../components/reader/Header";
-import LibraryBooks from "../../components/reader/LibraryBook";
-import Footer from "../../components/reader/Footer";
-import BackgroundText from "../../components/reader/BackgroundText";
+import {
+  Box,
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  PaletteMode,
+} from "@mui/material";
+import Header from "../../../components/reader/Header";
+import LibraryBooks from "../../../components/reader/LibraryBook";
+import Footer from "../../../components/reader/Footer";
+import BackgroundText from "../../../components/reader/BackgroundText";
 
 const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -47,16 +54,23 @@ const getDesignTokens = (mode: PaletteMode) => ({
 
 const Dashboard = () => {
   const [mode, setMode] = useState<PaletteMode>("light");
-
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
-  const toggleColorMode = () => setMode((prev) => (prev === "light" ? "dark" : "light"));
+  const toggleColorMode = () =>
+    setMode((prev) => (prev === "light" ? "dark" : "light"));
 
   return (
-    <div >
+    <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", bgcolor: "background.default", color: "text.primary" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+            bgcolor: "background.default",
+            color: "text.primary",
+          }}
+        >
           <Header toggleColorMode={toggleColorMode} />
           <BackgroundText />
           <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
