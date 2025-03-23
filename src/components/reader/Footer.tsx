@@ -11,7 +11,7 @@ export default function Footer() {
         bgcolor: theme.palette.mode === "light" ? "grey.100" : "grey.900",
         py: 6,
         borderTop: `1px solid ${theme.palette.divider}`,
-      }}
+      }
     >
       <Container maxWidth="lg">
         <Grid container spacing={4} justifyContent="space-evenly">
@@ -88,7 +88,7 @@ export default function Footer() {
                 style={{
                   padding: "10px 12px",
                   borderRadius: "4px 0 0 4px",
-                  border: `1px solid ${theme.palette.divider}`,
+                  border: `1px solid {theme.palette.divider}`,
                   borderRight: "none",
                   flexGrow: 1,
                   backgroundColor: theme.palette.background.paper,
