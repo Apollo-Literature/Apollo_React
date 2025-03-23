@@ -37,6 +37,23 @@ interface LoginFormData {
   role: "READER" | "PUBLISHER";
 }
 
+interface LoginResponse {
+  token: string;
+  refreshToken: string;
+  user: {
+    userId: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: null;
+    dateOfBirth: string;
+    supabaseUserId: null;
+    roles: { roleId: number; name: string; permissions: { id: number; name: string }[] }[];
+    isActive: boolean;
+    fullName: string;
+  };
+}
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
@@ -57,23 +74,18 @@ const SigninPage: React.FC = () => {
   });
   const [error, setError] = useState<string>("");
 
-  interface LoginResponse {
-    token: string;
-    refreshToken: string;
-    user: {
-      roles: { name: string }[];
-    };
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post<LoginResponse>("http://localhost:8080/api/v1/auth/login", {
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post<LoginResponse>(
+        "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/auth/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
 
       const { token, refreshToken, user } = response.data;
 

@@ -9,6 +9,8 @@ import {
   MenuItem,
   Fade,
   GlobalStyles,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { Mail, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -32,6 +34,9 @@ const SignupPage: React.FC = () => {
     dateOfBirth: "",
     role: "PUBLISHER", // Default role
   });
+  
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +52,7 @@ const SignupPage: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/register",
+        "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/auth/register", // Updated backend URL
         payload,
         {
           headers: {
@@ -56,11 +61,13 @@ const SignupPage: React.FC = () => {
         }
       );
 
-      alert("Signup successful!");
+      setSnackbarMessage("Signup successful! Please log in.");
+      setOpenSnackbar(true);
       console.log(response.data);
     } catch (error) {
       console.error("Signup failed", error);
-      alert("Signup failed. Please try again.");
+      setSnackbarMessage("Signup failed. Please try again.");
+      setOpenSnackbar(true);
     }
   };
 
@@ -229,6 +236,21 @@ const SignupPage: React.FC = () => {
           </Fade>
         </Container>
       </Box>
+
+      {/* Snackbar for success or error message */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity={snackbarMessage.includes("failed") ? "error" : "success"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
