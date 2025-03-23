@@ -11,8 +11,9 @@ import {
   GlobalStyles,
   Snackbar,
   Alert,
+  IconButton,
 } from "@mui/material";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -21,6 +22,7 @@ interface SignupFormData {
   lastName: string;
   email: string;
   password: string;
+  confirmPassword: string;
   dateOfBirth: string;
   role: string;
 }
@@ -31,15 +33,23 @@ const SignupPage: React.FC = () => {
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     dateOfBirth: "",
     role: "PUBLISHER", // Default role
   });
-  
+
+  const [showPassword, setShowPassword] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      setSnackbarMessage("Passwords do not match.");
+      setOpenSnackbar(true);
+      return;
+    }
 
     const payload = {
       firstName: formData.firstName,
@@ -162,13 +172,46 @@ const SignupPage: React.FC = () => {
                 <TextField
                   fullWidth
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   variant="outlined"
                   margin="normal"
-                  InputProps={{ startAdornment: <Lock size={20} /> }}
+                  InputProps={{
+                    startAdornment: <Lock size={20} />,
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        edge="end"
+                      >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </IconButton>
+                    ),
+                  }}
                   value={formData.password}
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
+                  }
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label="Confirm Password"
+                  type={showPassword ? "text" : "password"}
+                  variant="outlined"
+                  margin="normal"
+                  InputProps={{
+                    startAdornment: <Lock size={20} />,
+                    endAdornment: (
+                      <IconButton
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        edge="end"
+                      >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </IconButton>
+                    ),
+                  }}
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setFormData({ ...formData, confirmPassword: e.target.value })
                   }
                   required
                 />
