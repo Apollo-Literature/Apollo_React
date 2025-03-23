@@ -57,32 +57,42 @@ const SigninPage: React.FC = () => {
   });
   const [error, setError] = useState<string>("");
 
+  interface LoginResponse {
+    token: string;
+    refreshToken: string;
+    user: {
+      roles: { name: string }[];
+    };
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const response = await axios.post<LoginResponse>("http://localhost:8080/api/v1/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
-      if (formData.rememberMe) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
+      const { token, refreshToken, user } = response.data;
 
-      // Redirect to dashboard based on selected role
-      if (formData.role === "READER") {
-        navigate("/reader/dashboard");
-      } else {
+      // Store tokens in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Navigate based on user role
+      const role = user?.roles?.[0]?.name;
+      if (role === "PUBLISHER") {
         navigate("/publisher/dashboard");
+      } else {
+        navigate("/reader/dashboard");
       }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.message || "Login failed. Please try again.";
+      const errorMessage = err?.response?.data?.message || "Login failed. Please try again.";
       setError(errorMessage);
     }
   };
