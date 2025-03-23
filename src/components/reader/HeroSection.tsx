@@ -3,7 +3,7 @@
 import { Box, Typography, Button, Grid, Container } from "@mui/material"
 import { motion } from "framer-motion"
 
-const MotionBox = motion(Box)
+const MotionBox = motion()
 const MotionTypography = motion(Typography)
 const MotionButton = motion(Button)
 
@@ -77,7 +77,7 @@ export default function HeroSection()
                 >
                   Buy now
                 </MotionButton>
-                <MotionButton
+                 <MotionButton
                   variant="outlined"
                   size="large"
                   sx={{
