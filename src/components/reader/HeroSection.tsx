@@ -7,7 +7,7 @@ const MotionBox = motion(Box)
 const MotionTypography = motion(Typography)
 const MotionButton = motion(Button)
 
-export default function HeroSection() {
+export default function HeroSection() 
   return (
     <Box
       sx={{
