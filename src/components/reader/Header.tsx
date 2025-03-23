@@ -9,7 +9,7 @@ import {
   Button,
   Box,
   InputBase,
-  Badge,
+  // Badge,
   IconButton,
   useMediaQuery,
   useTheme,
@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import {
   Search as SearchIcon,
-  ShoppingCart as ShoppingCartIcon,
+  // ShoppingCart as ShoppingCartIcon,
   Menu as MenuIcon,
   Brightness4 as Brightness4Icon,
   Brightness7 as Brightness7Icon,
@@ -219,11 +219,11 @@ export default function Header({ toggleColorMode }: HeaderProps) {
           )}
 
           {/* Cart Icon */}
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={2} color="error">
               <ShoppingCartIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
 
           {/* Theme Toggle Button */}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
