@@ -30,6 +30,7 @@ const globalStyles = `
   }
 `;
 
+
 interface LoginFormData {
   email: string;
   password: string;
