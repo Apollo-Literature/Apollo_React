@@ -8,14 +8,14 @@ const MotionTypography = motion(Typography)
 const MotionButton = motion(Button)
 
 export default function HeroSection() 
-  return (
+  return ()
     <Box
       sx={{
         bgcolor: "background.paper",
         color: "text.primary",
         overflow: "hidden",
         position: "relative",
-      }
+        }
     >
       <Container maxWidth="xl">
         <Grid container spacing={2} sx={{ minHeight: "100vh", alignItems: "center" }}>
@@ -56,7 +56,7 @@ export default function HeroSection()
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-              >
+                >
                 Not all stories are what they seem. Not all letters are ink on paper. And not all pages are just pages.
                 Some are marks of destiny...
               </MotionTypography>
@@ -87,7 +87,7 @@ export default function HeroSection()
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                >
+                  >
                   Learn more
                 </MotionButton>
               </MotionBox>
@@ -117,6 +117,6 @@ export default function HeroSection()
         </Grid>
       </Container>
     </Box>
-  )
-}
+  
+
 
