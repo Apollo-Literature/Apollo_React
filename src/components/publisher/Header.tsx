@@ -8,8 +8,6 @@ import {
   Typography,
   Button,
   Box,
-  InputBase,
-  Badge,
   IconButton,
   useMediaQuery,
   useTheme,
@@ -21,52 +19,13 @@ import {
   useScrollTrigger,
 } from "@mui/material";
 import {
-  Search as SearchIcon,
-  ShoppingCart as ShoppingCartIcon,
   Menu as MenuIcon,
   Brightness4 as Brightness4Icon,
   Brightness7 as Brightness7Icon,
 } from "@mui/icons-material";
-import { styled, alpha } from "@mui/material/styles";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import apolloLogo from "../../assets/apollo-logo.png";
 
-// Search Bar Styling
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: 20,
-  backgroundColor: alpha(theme.palette.grey[300], 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.grey[300], 0.25),
-  },
-  marginRight: theme.spacing(2),
-  width: "100%",
-  maxWidth: 300,
-  display: "flex",
-  alignItems: "center",
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-  [theme.breakpoints.down("sm")]: {
-    maxWidth: "100%",
-    margin: "0 auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  right: theme.spacing(2),
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  width: "100%",
-  padding: theme.spacing(1, 1, 1, 4),
-  transition: theme.transitions.create("width"),
-}));
 
 // Navigation items
 const navItems = [
@@ -110,13 +69,6 @@ export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
       </Box>
       <Divider sx={{ my: 2 }} />
 
-      {/* Search Bar in Mobile Menu */}
-      <Search>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }} />
-      </Search>
 
       <List sx={{ mt: 2 }}>
         {navItems.map((item) => (
@@ -173,23 +125,6 @@ export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
             </Box>
           )}
 
-          {/* Search Bar (Only Show in Desktop) */}
-          {!isMobile && (
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }} />
-            </Search>
-          )}
-
-          {/* Cart Icon */}
-          <IconButton color="inherit">
-            <Badge badgeContent={3} color="error">
-              <ShoppingCartIcon sx={{ color: "black" }} />
-            </Badge>
-          </IconButton>
-
           {/* Theme Toggle Button */}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
             {theme.palette.mode === "dark" ? <Brightness7Icon sx={{ color: "black" }} /> : <Brightness4Icon />}
@@ -199,6 +134,8 @@ export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
           <Button
             variant="contained"
             color="primary"
+            component={Link}
+            to="../other/Profile"
             sx={{
               ml: 2,
               borderRadius: 2,
