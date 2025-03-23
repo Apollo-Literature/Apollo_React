@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   TextField,
   Checkbox,
@@ -8,9 +9,10 @@ import {
   Paper,
   Box,
   InputAdornment,
+  Alert,
 } from "@mui/material";
 import { Lock, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginFormData {
   email: string;
@@ -19,15 +21,35 @@ interface LoginFormData {
 }
 
 const SigninPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string>("");
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
     rememberMe: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add authentication logic here
+    setError("");
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/v1/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (formData.rememberMe) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+
+      // Navigate to the correct page after login
+      navigate("/reader/dashboard"); // Change to your actual route
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const errorMessage = err?.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
+    }
   };
 
   return (
@@ -39,6 +61,12 @@ const SigninPage: React.FC = () => {
         <Typography variant="body2" color="text.secondary" gutterBottom>
           Use your account details below.
         </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mt: 2, mb: 2 }}>
+            {error}
+          </Alert>
+        )}
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <TextField
@@ -89,14 +117,7 @@ const SigninPage: React.FC = () => {
             </Link>
           </Box>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3 }}
-            component={Link}
-            to="/home"
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
             Sign In
           </Button>
         </Box>

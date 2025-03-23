@@ -35,9 +35,9 @@ import apolloLogo from "../../assets/apollo-logo.png";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: 20,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  backgroundColor: alpha(theme.palette.grey[300], 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.grey[300], 0.25),
   },
   marginRight: theme.spacing(2),
   width: "100%",
@@ -70,16 +70,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 // Navigation items
 const navItems = [
-  { name: "Home", path: "/reader/dashboard" },
-  { name: "My Library", path: "../library/dashboard" },
-  { name: "Explore", path: "../Explore/dashboard" },
+  { name: "Home", path: "/publisher/dashboard" },
+  { name: "Analytics", path: "/publisher/analytics" },
 ];
 
 interface HeaderProps {
   toggleColorMode: () => void;
 }
 
-export default function Header({ toggleColorMode }: HeaderProps) {
+export default function PublisherHeader({ toggleColorMode }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -103,29 +102,20 @@ export default function Header({ toggleColorMode }: HeaderProps) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", p: 2 }}>
       {/* Logo */}
-      <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        <img
-          src={apolloLogo || "/placeholder.svg"}
-          alt="Apollo Logo"
-          style={{ height: 40 }}
-        />
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <img src={apolloLogo || "/placeholder.svg"} alt="Apollo Logo" style={{ height: 40 }} />
         <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
           APOLLO
         </Typography>
       </Box>
       <Divider sx={{ my: 2 }} />
 
-      {/* Search Bar (Added to Mobile Menu) */}
+      {/* Search Bar in Mobile Menu */}
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search..."
-          inputProps={{ "aria-label": "search" }}
-        />
+        <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }} />
       </Search>
 
       <List sx={{ mt: 2 }}>
@@ -135,12 +125,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
               fullWidth
               component={Link}
               to={item.path}
-              sx={{
-                textAlign: "center",
-                color: "inherit",
-                fontSize: "1rem",
-                py: 1,
-              }}
+              sx={{ textAlign: "center", color: "inherit", fontSize: "1rem", py: 1 }}
             >
               {item.name}
             </Button>
@@ -154,36 +139,24 @@ export default function Header({ toggleColorMode }: HeaderProps) {
     <Slide appear={false} direction="down" in={!trigger}>
       <AppBar
         position="fixed"
-        color="inherit"
         elevation={isScrolled ? 4 : 0}
         sx={{
-          bgcolor: isScrolled ? "background.default" : "transparent",
-          transition: theme.transitions.create([
-            "background-color",
-            "box-shadow",
-          ]),
+          bgcolor: "white", // ✅ Set Navbar background to white
+          color: "black", // ✅ Set text color to black
+          transition: theme.transitions.create(["background-color", "box-shadow"]),
         }}
       >
         <Toolbar>
           {/* Mobile Menu Button */}
           {isMobile && (
-            <IconButton
-              color="inherit"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
-            >
+            <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
               <MenuIcon />
             </IconButton>
           )}
 
           {/* Logo */}
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <img
-              src={apolloLogo || "/placeholder.svg"}
-              alt="Apollo Logo"
-              style={{ height: 40 }}
-            />
+            <img src={apolloLogo || "/placeholder.svg"} alt="Apollo Logo" style={{ height: 40 }} />
             <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
               APOLLO
             </Typography>
@@ -193,12 +166,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
           {!isMobile && (
             <Box sx={{ display: "flex", ml: 4 }}>
               {navItems.map((item) => (
-                <Button
-                  key={item.name}
-                  component={Link}
-                  to={item.path}
-                  sx={{ color: "inherit", mx: 0.5 }}
-                >
+                <Button key={item.name} component={Link} to={item.path} sx={{ color: "black", mx: 0.5 }}>
                   {item.name}
                 </Button>
               ))}
@@ -211,35 +179,26 @@ export default function Header({ toggleColorMode }: HeaderProps) {
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search..."
-                inputProps={{ "aria-label": "search" }}
-              />
+              <StyledInputBase placeholder="Search..." inputProps={{ "aria-label": "search" }} />
             </Search>
           )}
 
           {/* Cart Icon */}
           <IconButton color="inherit">
-            <Badge badgeContent={2} color="error">
-              <ShoppingCartIcon />
+            <Badge badgeContent={3} color="error">
+              <ShoppingCartIcon sx={{ color: "black" }} />
             </Badge>
           </IconButton>
 
           {/* Theme Toggle Button */}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? (
-              <Brightness7Icon />
-            ) : (
-              <Brightness4Icon />
-            )}
+            {theme.palette.mode === "dark" ? <Brightness7Icon sx={{ color: "black" }} /> : <Brightness4Icon />}
           </IconButton>
 
           {/* Profile Button */}
           <Button
             variant="contained"
             color="primary"
-            component={Link}
-            to="../other/PersonCard"
             sx={{
               ml: 2,
               borderRadius: 2,
