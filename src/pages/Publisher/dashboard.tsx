@@ -70,6 +70,20 @@ const getDesignTokens = (mode: PaletteMode) => ({
   },
 });
 
+// Define the form data interface for type safety
+interface BookFormData {
+  title: string;
+  author: string;
+  description: string;
+  isbn: string;
+  publicationDate: string;
+  pageCount: string;
+  language: string;
+  price: string;
+  thumbnail: string;
+  url: string;
+}
+
 function PublisherDashboard() {
   const [mode, setMode] = useState<PaletteMode>("light");
   const theme = createTheme(getDesignTokens(mode));
@@ -77,7 +91,7 @@ function PublisherDashboard() {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
 
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<BookFormData>({
     title: "",
     author: "",
     description: "",
@@ -101,6 +115,12 @@ function PublisherDashboard() {
     setError(null);
     setSuccess(null);
 
+    // Validate form data
+    if (!formData.title || !formData.author) {
+      setError("Title and Author are required fields");
+      return;
+    }
+
     const token = localStorage.getItem("token");
     if (!token || token === "null") {
       setError("Missing authentication token. Please log in again.");
@@ -110,8 +130,8 @@ function PublisherDashboard() {
     try {
       const payload = {
         ...formData,
-        pageCount: parseInt(formData.pageCount),
-        price: parseFloat(formData.price),
+        pageCount: formData.pageCount ? parseInt(formData.pageCount, 10) : 0,
+        price: formData.price ? parseFloat(formData.price) : 0,
       };
 
       const response = await fetch(
@@ -132,11 +152,39 @@ function PublisherDashboard() {
       }
 
       setSuccess("Book added successfully!");
-      setTimeout(() => window.location.reload(), 1000);
+      setFormData({
+        title: "",
+        author: "",
+        description: "",
+        isbn: "",
+        publicationDate: "",
+        pageCount: "",
+        language: "",
+        price: "",
+        thumbnail: "",
+        url: "",
+      });
+      setTimeout(() => {
+        setOpen(false);
+        window.location.reload();
+      }, 1500);
     } catch (err: any) {
       setError(err.message || "Failed to add book.");
     }
   };
+
+  const formFields = [
+    { label: "Title", name: "title" },
+    { label: "Author", name: "author" },
+    { label: "Description", name: "description", multiline: true, rows: 4 },
+    { label: "ISBN", name: "isbn" },
+    { label: "Publication Date", name: "publicationDate", type: "date", InputLabelProps: { shrink: true } },
+    { label: "Page Count", name: "pageCount", type: "number" },
+    { label: "Language", name: "language" },
+    { label: "Price", name: "price", type: "number", step: "0.01" },
+    { label: "Thumbnail URL", name: "thumbnail" },
+    { label: "Book File URL", name: "url" },
+  ];
 
   return (
     <ThemeProvider theme={theme}>
@@ -154,8 +202,9 @@ function PublisherDashboard() {
 
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
           <Container maxWidth={false} disableGutters>
-            <br></br><br></br>
             <Box sx={{ py: 6, px: 4, textAlign: "center" }}>
+              <br></br>
+              <br></br>
               <Typography variant="h3" fontWeight="bold" gutterBottom>
                 Publisher Dashboard
               </Typography>
@@ -180,7 +229,7 @@ function PublisherDashboard() {
           </Container>
         </Box>
 
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 4 }}>
           <Button
             variant="contained"
             color="secondary"
@@ -191,38 +240,40 @@ function PublisherDashboard() {
             Go to Reader Dashboard
           </Button>
         </Box>
-        <br />
+        
         <Footer />
 
         {/* Add Book Dialog */}
-        <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+        <Dialog 
+          open={open} 
+          onClose={() => setOpen(false)} 
+          fullWidth 
+          maxWidth="md"
+          PaperProps={{
+            sx: { maxHeight: "90vh" }
+          }}
+        >
           <DialogTitle>Add New Book</DialogTitle>
           <DialogContent dividers>
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
             {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
             <Grid container spacing={2}>
-              {[
-                { label: "Title", name: "title" },
-                { label: "Author", name: "author" },
-                { label: "Description", name: "description" },
-                { label: "ISBN", name: "isbn" },
-                { label: "Publication Date", name: "publicationDate", type: "date" },
-                { label: "Page Count", name: "pageCount", type: "number" },
-                { label: "Language", name: "language" },
-                { label: "Price", name: "price", type: "number" },
-                { label: "Thumbnail URL", name: "thumbnail" },
-                { label: "Book File URL", name: "url" },
-              ].map(({ label, name, type = "text" }) => (
-                <Grid item xs={12} sm={6} key={name}>
+              {formFields.map(({ label, name, type = "text", multiline = false, rows = 1, InputLabelProps = {} }) => (
+                <Grid item xs={12} sm={name === "description" ? 12 : 6} key={name}>
                   <TextField
                     fullWidth
-                    required
+                    required={name === "title" || name === "author"}
                     label={label}
                     name={name}
                     type={type}
-                    value={formData[name as keyof typeof formData]}
+                    multiline={multiline}
+                    rows={rows}
+                    InputLabelProps={InputLabelProps}
+                    value={formData[name as keyof BookFormData]}
                     onChange={handleChange}
+                    variant="outlined"
+                    margin="normal"
                   />
                 </Grid>
               ))}
