@@ -63,14 +63,16 @@ const ExplorePage = () => {
   const [mode, setMode] = useState<PaletteMode>("light");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  interface Book {
-    id: number;
-    title: string;
-  }
-
   const [results, setResults] = useState<Book[]>([]);
 
+  interface Book {
+    key: string;
+    title: string;
+    author_name?: string[];
+  }
+
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   const toggleColorMode = () =>
     setMode((prev) => (prev === "light" ? "dark" : "light"));
 
@@ -81,17 +83,40 @@ const ExplorePage = () => {
 
   const handleSearch = async () => {
     if (!selectedFile) return;
+
     setIsSearching(true);
-    // Simulate AI model request delay
-    setTimeout(() => {
-      // Simulated AI results
-      setResults([
-        { id: 1, title: "Mystery of the Scanned Cover" },
-        { id: 2, title: "AI Inspired Book" },
-        { id: 3, title: "Another Book Match" },
-      ]);
+    setResults([]);
+
+    // Extracting book title from file name (removing extension)
+    const fileName = selectedFile.name.replace(/\.[^/.]+$/, "").trim();
+
+    try {
+      const response = await fetch(
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(fileName)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch book data");
+      }
+
+      const data = await response.json();
+      if (data.docs && data.docs.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const books: Book[] = data.docs.slice(0, 5).map((doc: any) => ({
+          key: doc.key,
+          title: doc.title,
+          author_name: doc.author_name || [],
+        }));
+        setResults(books);
+      } else {
+        setResults([]);
+      }
+    } catch (error) {
+      console.error("Error fetching book data:", error);
+      setResults([]);
+    } finally {
       setIsSearching(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -110,9 +135,9 @@ const ExplorePage = () => {
         <BackgroundText />
 
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden", py: 6 }}>
+          <br></br>
+          <br></br>
           <Container maxWidth="xl" disableGutters sx={{ textAlign: "center" }}>
-            <br></br>
-            <br></br>
             <Typography variant="h3" gutterBottom fontWeight="bold">
               Explore with AI
             </Typography>
@@ -161,10 +186,23 @@ const ExplorePage = () => {
                   </Typography>
                   <ul>
                     {results.map((book) => (
-                      <li key={book.id}>{book.title}</li>
+                      <li key={book.key}>
+                        <strong>{book.title}</strong>
+                        {book.author_name && (
+                          <Typography variant="body2">
+                            by {book.author_name.join(", ")}
+                          </Typography>
+                        )}
+                      </li>
                     ))}
                   </ul>
                 </Box>
+              )}
+
+              {results.length === 0 && !isSearching && selectedFile && (
+                <Typography variant="body2" color="text.secondary">
+                  No similar books found.
+                </Typography>
               )}
             </Stack>
           </Container>

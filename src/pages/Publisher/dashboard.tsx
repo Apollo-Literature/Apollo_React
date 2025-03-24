@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   Box,
@@ -7,11 +8,18 @@ import {
   ThemeProvider,
   createTheme,
   PaletteMode,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Grid,
+  Alert,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import Header from "../../components/publisher/Header";
 import Footer from "../../components/publisher/Footer";
-import PublisherHeroSection from "../../components/publisher/PublisherHeroSection";
 import MyBooks from "../../components/publisher/MyBooks";
 
 const getDesignTokens = (mode: PaletteMode) => ({
@@ -65,9 +73,70 @@ const getDesignTokens = (mode: PaletteMode) => ({
 function PublisherDashboard() {
   const [mode, setMode] = useState<PaletteMode>("light");
   const theme = createTheme(getDesignTokens(mode));
-
   const toggleColorMode = () =>
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    author: "",
+    description: "",
+    isbn: "",
+    publicationDate: "",
+    pageCount: "",
+    language: "",
+    price: "",
+    thumbnail: "",
+    url: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    setError(null);
+    setSuccess(null);
+
+    const token = localStorage.getItem("token");
+    if (!token || token === "null") {
+      setError("Missing authentication token. Please log in again.");
+      return;
+    }
+
+    try {
+      const payload = {
+        ...formData,
+        pageCount: parseInt(formData.pageCount),
+        price: parseFloat(formData.price),
+      };
+
+      const response = await fetch(
+        "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/add-book",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || "Failed to add book.");
+      }
+
+      setSuccess("Book added successfully!");
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (err: any) {
+      setError(err.message || "Failed to add book.");
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,27 +154,87 @@ function PublisherDashboard() {
 
         <Box component="main" sx={{ flexGrow: 1, overflow: "hidden" }}>
           <Container maxWidth={false} disableGutters>
-            <PublisherHeroSection />
+            <br></br><br></br>
+            <Box sx={{ py: 6, px: 4, textAlign: "center" }}>
+              <Typography variant="h3" fontWeight="bold" gutterBottom>
+                Publisher Dashboard
+              </Typography>
+              <Typography variant="h6" color="text.secondary" gutterBottom>
+                Upload your books and manage your collection.
+              </Typography>
+
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                sx={{ mt: 3 }}
+                onClick={() => setOpen(true)}
+              >
+                + Add Book
+              </Button>
+            </Box>
 
             <Container maxWidth="xl" sx={{ py: 4 }}>
               <MyBooks />
             </Container>
           </Container>
         </Box>
-            {/* 📌 Add Reader Dashboard Button Here */}
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-              <Button
-                variant="contained"
-                color="secondary"
-                component={Link}
-                to="/reader/dashboard"
-                sx={{ textTransform: "none", fontSize: "1rem", px: 4 }}
-              >
-                Go to Reader Dashboard
-              </Button>
-            </Box>
-            <br />
+
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            component={Link}
+            to="/reader/dashboard"
+            sx={{ textTransform: "none", fontSize: "1rem", px: 4 }}
+          >
+            Go to Reader Dashboard
+          </Button>
+        </Box>
+        <br />
         <Footer />
+
+        {/* Add Book Dialog */}
+        <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+          <DialogTitle>Add New Book</DialogTitle>
+          <DialogContent dividers>
+            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+            {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+
+            <Grid container spacing={2}>
+              {[
+                { label: "Title", name: "title" },
+                { label: "Author", name: "author" },
+                { label: "Description", name: "description" },
+                { label: "ISBN", name: "isbn" },
+                { label: "Publication Date", name: "publicationDate", type: "date" },
+                { label: "Page Count", name: "pageCount", type: "number" },
+                { label: "Language", name: "language" },
+                { label: "Price", name: "price", type: "number" },
+                { label: "Thumbnail URL", name: "thumbnail" },
+                { label: "Book File URL", name: "url" },
+              ].map(({ label, name, type = "text" }) => (
+                <Grid item xs={12} sm={6} key={name}>
+                  <TextField
+                    fullWidth
+                    required
+                    label={label}
+                    name={name}
+                    type={type}
+                    value={formData[name as keyof typeof formData]}
+                    onChange={handleChange}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={handleSubmit} variant="contained" color="primary">
+              Submit
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </ThemeProvider>
   );
