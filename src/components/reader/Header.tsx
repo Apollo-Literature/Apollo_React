@@ -89,7 +89,7 @@ export default function Header({ toggleColorMode }: HeaderProps) {
     title: string;
     author?: string;
   }
-  
+
   const [searchResults, setSearchResults] = useState<Book[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -109,7 +109,9 @@ export default function Header({ toggleColorMode }: HeaderProps) {
     setShowDropdown(true);
     if (query.length >= 2) {
       try {
-        const response = await axios.get<Book[]>(`http://localhost:8080/api/v1/books/search?q=${query}`);
+        const response = await axios.get<Book[]>(
+          `http://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/search?q=${query}`
+        );
         setSearchResults(response.data);
       } catch (error) {
         console.error("Search error:", error);
@@ -122,7 +124,9 @@ export default function Header({ toggleColorMode }: HeaderProps) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", p: 2 }}>
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
         <img src={apolloLogo} alt="Apollo Logo" style={{ height: 40 }} />
         <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
           APOLLO
@@ -147,7 +151,12 @@ export default function Header({ toggleColorMode }: HeaderProps) {
               fullWidth
               component={Link}
               to={item.path}
-              sx={{ textAlign: "center", color: "inherit", fontSize: "1rem", py: 1 }}
+              sx={{
+                textAlign: "center",
+                color: "inherit",
+                fontSize: "1rem",
+                py: 1,
+              }}
             >
               {item.name}
             </Button>
@@ -165,13 +174,21 @@ export default function Header({ toggleColorMode }: HeaderProps) {
         elevation={isScrolled ? 4 : 0}
         sx={{
           bgcolor: isScrolled ? "background.default" : "",
-          transition: theme.transitions.create(["background-color", "box-shadow"]),
+          transition: theme.transitions.create([
+            "background-color",
+            "box-shadow",
+          ]),
           zIndex: 1400,
         }}
       >
         <Toolbar>
           {isMobile && (
-            <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
               <MenuIcon />
             </IconButton>
           )}
@@ -185,7 +202,12 @@ export default function Header({ toggleColorMode }: HeaderProps) {
           {!isMobile && (
             <Box sx={{ display: "flex", ml: 4 }}>
               {navItems.map((item) => (
-                <Button key={item.name} component={Link} to={item.path} sx={{ color: "inherit", mx: 0.5 }}>
+                <Button
+                  key={item.name}
+                  component={Link}
+                  to={item.path}
+                  sx={{ color: "inherit", mx: 0.5 }}
+                >
                   {item.name}
                 </Button>
               ))}
@@ -204,7 +226,9 @@ export default function Header({ toggleColorMode }: HeaderProps) {
                   value={searchQuery}
                   onChange={handleSearch}
                   onBlur={() => setTimeout(() => setShowDropdown(false), 300)} // Close dropdown after focus loss
-                  onFocus={() => searchQuery.length >= 2 && setShowDropdown(true)}
+                  onFocus={() =>
+                    searchQuery.length >= 2 && setShowDropdown(true)
+                  }
                 />
               </Search>
 
@@ -230,7 +254,10 @@ export default function Header({ toggleColorMode }: HeaderProps) {
                       sx={{ px: 2, py: 1 }}
                       onClick={() => setShowDropdown(false)}
                     >
-                      <ListItemText primary={book.title} secondary={book.author || ""} />
+                      <ListItemText
+                        primary={book.title}
+                        secondary={book.author || ""}
+                      />
                     </ListItem>
                   ))}
                 </Paper>
@@ -240,7 +267,11 @@ export default function Header({ toggleColorMode }: HeaderProps) {
 
           {/* Theme Toggle */}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
           </IconButton>
 
           {/* Profile Button */}
