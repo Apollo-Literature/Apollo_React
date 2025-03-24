@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,6 +16,8 @@ import {
   DialogContent,
   DialogActions,
   useTheme,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -41,35 +44,67 @@ export default function BestsellingBooks() {
   const [showAll, setShowAll] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [openBuyPopup, setOpenBuyPopup] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const displayedBooks = showAll ? books : books.slice(0, 5);
 
   useEffect(() => {
     const fetchBooks = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get(
-          "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/all?page=0&size=30&sort=title,asc"
+        interface ApiResponse {
+          content: {
+            bookId: number;
+            title?: string;
+            author?: string;
+            description?: string;
+            isbn?: string;
+            publicationDate?: string;
+            pageCount?: number;
+            language?: string;
+            price?: number;
+            thumbnail?: string;
+            url?: string;
+          }[];
+        }
+
+        const response = await axios.get<ApiResponse>(
+          "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/all",
+          {
+            params: {
+              page: 0,
+              size: 30,
+              sort: "title,asc"
+            }
+          }
         );
-        const fetchedBooks = (
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (response.data as { content: any[] }).content || []
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ).map((book: any) => ({
-          bookId: book.bookId,
-          title: book.title,
-          author: book.author,
-          description: book.description,
-          isbn: book.isbn,
-          publicationDate: book.publicationDate,
-          pageCount: book.pageCount,
-          language: book.language,
-          price: book.price,
-          thumbnail: book.thumbnail, // Use the thumbnail URL from the backend
-          url: book.url,
-        }));
-        setBooks(fetchedBooks);
+
+        // Check if response data has the expected structure
+        if (response.data.content) {
+          const fetchedBooks = response.data.content.map((book: any) => ({
+            bookId: book.bookId,
+            title: book.title || "Unknown Title",
+            author: book.author || "Unknown Author",
+            description: book.description || "",
+            isbn: book.isbn || "",
+            publicationDate: book.publicationDate || "",
+            pageCount: book.pageCount || 0,
+            language: book.language || "",
+            price: book.price || 0,
+            thumbnail: book.thumbnail || "https://via.placeholder.com/150x220?text=No+Image", 
+            url: book.url || "#",
+          }));
+          setBooks(fetchedBooks);
+        } else {
+          throw new Error("Unexpected API response format");
+        }
       } catch (error) {
         console.error("Error fetching books:", error);
+        setError("Failed to load books. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,20 +116,64 @@ export default function BestsellingBooks() {
     setOpenBuyPopup(true);
   };
 
-  const confirmPurchase = () => {
+  const confirmPurchase = async () => {
     if (selectedBook) {
-      alert(`You have successfully bought "${selectedBook.title}"!`);
-      setOpenBuyPopup(false);
+      try {
+        // Here you would normally make an API call to process the purchase
+        // For now we'll just show a success message
+        alert(`You have successfully bought "${selectedBook.title}" for $${selectedBook.price.toFixed(2)}!`);
+        setOpenBuyPopup(false);
+      } catch (error) {
+        console.error("Error processing purchase:", error);
+        alert("Failed to process purchase. Please try again.");
+      }
     }
   };
 
-  const downloadBook = (url: string) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "";
-    link.target = "_blank";
-    link.click();
+  const downloadBook = (book: Book) => {
+    if (!book.url || book.url === "#") {
+      alert("This book is not available for download.");
+      return;
+    }
+
+    try {
+      // Create a download link
+      const link = document.createElement("a");
+      link.href = book.url;
+      link.setAttribute("download", `${book.title}.pdf`); // Assuming PDF format
+      link.setAttribute("target", "_blank");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading book:", error);
+      alert("Failed to download the book. Please try again.");
+    }
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ py: 6, px: { xs: 2, md: 6 } }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+
+  if (books.length === 0) {
+    return (
+      <Box sx={{ py: 6, px: { xs: 2, md: 6 } }}>
+        <Typography variant="h6" align="center">No books available at the moment.</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ py: 6, px: { xs: 2, md: 6 } }}>
@@ -109,19 +188,21 @@ export default function BestsellingBooks() {
         <Typography variant="h4" component="h2" sx={{ fontWeight: "bold" }}>
           Books
         </Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ borderRadius: 4, px: 3, py: 1 }}
-          onClick={() => setShowAll(!showAll)}
-        >
-          {showAll ? "Show Less" : "View All"}
-        </Button>
+        {books.length > 5 && (
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ borderRadius: 4, px: 3, py: 1 }}
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? "Show Less" : "View All"}
+          </Button>
+        )}
       </Box>
 
       <Grid container spacing={3}>
         {displayedBooks.map((book, index) => (
-          <Grid item key={book.bookId} xs={6} sm={4} md={2.4}>
+          <Grid item key={book.bookId || index} xs={12} sm={6} md={4} lg={2.4}>
             <MotionCard
               elevation={3}
               sx={{
@@ -142,19 +223,38 @@ export default function BestsellingBooks() {
             >
               <CardMedia
                 component="img"
-                image={book.thumbnail} // Display the book's thumbnail
+                image={book.thumbnail || "https://via.placeholder.com/150x220?text=No+Image"}
                 alt={book.title}
                 sx={{ height: 250, objectFit: "cover" }}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = "https://via.placeholder.com/150x220?text=Error+Loading+Image";
+                }}
               />
               <CardContent sx={{ flexGrow: 1, p: 2 }}>
                 <Typography
                   variant="subtitle1"
                   sx={{ fontWeight: "medium", mb: 0.5 }}
+                  title={book.title}
+                  noWrap
                 >
                   {book.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography 
+                  variant="body2" 
+                  color="text.secondary"
+                  noWrap
+                  title={`by ${book.author}`}
+                >
                   by {book.author}
+                </Typography>
+                <Typography 
+                  variant="body2" 
+                  color="primary"
+                  sx={{ mt: 1, fontWeight: "bold" }}
+                >
+                  ${book.price.toFixed(2)}
                 </Typography>
               </CardContent>
 
@@ -168,7 +268,7 @@ export default function BestsellingBooks() {
                   color="primary"
                   size="small"
                   sx={{ flex: 1 }}
-                  onClick={() => downloadBook(book.url)}
+                  onClick={() => downloadBook(book)}
                 >
                   Read
                 </Button>
@@ -197,11 +297,36 @@ export default function BestsellingBooks() {
         {selectedBook && (
           <>
             <DialogTitle>Confirm Purchase</DialogTitle>
-            <DialogContent>
-              <Typography>
-                Are you sure you want to buy "
-                <strong>{selectedBook.title}</strong>" by{" "}
-                <strong>{selectedBook.author}</strong>?
+            <DialogContent dividers>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, mb: 2 }}>
+                <Box sx={{ width: { xs: '100%', sm: '150px' }, flexShrink: 0 }}>
+                  <img 
+                    src={selectedBook.thumbnail || "https://via.placeholder.com/150x220?text=No+Image"}
+                    alt={selectedBook.title}
+                    style={{ width: '100%', height: 'auto', maxHeight: '200px', objectFit: 'cover' }}
+                  />
+                </Box>
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    {selectedBook.title}
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    by <strong>{selectedBook.author}</strong>
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {selectedBook.description ? 
+                      (selectedBook.description.length > 200 ? 
+                        selectedBook.description.substring(0, 200) + '...' : 
+                        selectedBook.description) : 
+                      'No description available.'}
+                  </Typography>
+                  <Typography variant="h6" color="primary" sx={{ mt: 2 }}>
+                    Price: ${selectedBook.price.toFixed(2)}
+                  </Typography>
+                </Box>
+              </Box>
+              <Typography variant="body2" sx={{ mt: 2 }}>
+                Are you sure you want to purchase this book?
               </Typography>
             </DialogContent>
             <DialogActions>
