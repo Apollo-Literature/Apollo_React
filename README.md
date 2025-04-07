@@ -112,8 +112,7 @@ Publishers can:
 🧑‍💻 DEVELOPED BY
 ------------------
 - Apollo Team, 2025  
-- Lead Frontend Developer: Supun Devendra 
-- Email: supundevendra1207@gmail.com  
+- Lead Frontend Developer: Supun Devendra  
 
 
 📜 LICENSE
