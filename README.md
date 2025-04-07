@@ -1,6 +1,6 @@
-===========================================================
+
 🌌 APOLLO FRONTEND – FULLSTACK BOOK PLATFORM (REACT + VITE)
-===========================================================
+
 
 📖 PROJECT SUMMARY
 -------------------
@@ -36,22 +36,7 @@ It connects to a REST API built with Node.js + Express, and uses Supabase for se
 - React Router DOM (Routing)
 - LocalStorage (Token Management)
 
-📁 FOLDER STRUCTURE
----------------------
-apollo-frontend/
-├── public/
-├── src/
-│   ├── components/
-│   │   ├── common/         → Shared UI components (Header, Sidebar, etc.)
-│   │   ├── reader/         → Reader-specific UI components
-│   │   └── publisher/      → Publisher dashboard components
-│   ├── pages/              → Login, Register, Reader, and Publisher pages
-│   ├── services/           → Axios instances and API functions
-│   ├── context/            → Auth context and provider
-│   ├── hooks/              → useAuth and custom React hooks
-│   ├── utils/              → Token handlers and utility functions
-│   ├── App.tsx             → App routes and layout
-│   └── main.tsx            → Vite entry file
+- ![image](https://github.com/user-attachments/assets/8e920189-d2bb-46f7-ae25-01bc080169fb)
 
 🔐 AUTHENTICATION FLOW
 -----------------------
@@ -126,10 +111,10 @@ Publishers can:
 
 🧑‍💻 DEVELOPED BY
 ------------------
-Apollo Team, 2025  
-Lead Frontend Developer: Supun Devendra 
-Email: supundevendra1207@gmail.com  
-GitHub: 
+- Apollo Team, 2025  
+- Lead Frontend Developer: Supun Devendra 
+- Email: supundevendra1207@gmail.com  
+
 
 📜 LICENSE
 -----------
