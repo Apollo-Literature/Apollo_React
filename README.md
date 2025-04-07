@@ -1,29 +1,137 @@
-# 📚 Apollo Library System - Frontend
+===========================================================
+🌌 APOLLO FRONTEND – FULLSTACK BOOK PLATFORM (REACT + VITE)
+===========================================================
 
-Apollo Library System is a modern and responsive Library Management System (LMS) designed to provide seamless reading experiences for users and powerful content management for publishers. This repository contains the frontend built with **React.js**, and **Material UI**, while the backend is powered by **Spring Boot**.
+📖 PROJECT SUMMARY
+-------------------
+Apollo is a full-stack book-sharing platform designed for two types of users:
+1. 📚 Readers – Browse and read books via a clean and responsive UI.
+2. ✍️ Publishers – Upload and manage books with file upload and metadata handling.
 
-## 🚀 Features
+This frontend is built using:
+- React.js + Vite
+- TypeScript
+- Material UI (MUI)
+- Axios
+- Supabase (for storage)
+It connects to a REST API built with Node.js + Express, and uses Supabase for securely storing uploaded files (PDF, EPUB, Thumbnails).
 
-- 📖 **User Dashboard** – Explore and manage your book collection.
-- 🏆 **Bestselling Books** – View and purchase trending books.
-- 👨‍🏫 **Popular Authors** – Browse and learn more about top authors.
-- 🔎 **Search Functionality** – Quickly find books and authors.
-- 🎨 **Light & Dark Mode** – Switch between themes for better readability.
-- 🛒 **Cart & Purchases** – Buy books and manage your purchases.
-- 📂 **Library Management** – Publishers can add, edit, and manage books.
-- 🏗 **Modular Components** – Well-structured, reusable UI components.
+🎯 KEY FEATURES
+---------------
+- ✅ JWT + Refresh Token–based Authentication
+- ✅ Role-based Access and Redirection (Reader / Publisher)
+- ✅ Book Upload (PDF/EPUB or External URL)
+- ✅ Supabase Storage Integration
+- ✅ Real-time Upload Progress
+- ✅ Drag-and-Drop File Upload
+- ✅ Responsive UI with Material UI
 
-## 🛠 Tech Stack
+🔧 TECHNOLOGIES USED
+---------------------
+- React.js with Vite (Frontend Framework)
+- TypeScript (Type Safety)
+- Material UI (Component Library)
+- Axios (API Communication)
+- Supabase (File Storage)
+- React Router DOM (Routing)
+- LocalStorage (Token Management)
 
-### Frontend:
-- **React.js** – Component-based UI architecture.
-- **TypeScript** – Static typing for better maintainability.
-- **Material UI** – Styled UI components.
-- **Framer Motion** – Smooth animations & interactions.
+📁 FOLDER STRUCTURE
+---------------------
+apollo-frontend/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── common/         → Shared UI components (Header, Sidebar, etc.)
+│   │   ├── reader/         → Reader-specific UI components
+│   │   └── publisher/      → Publisher dashboard components
+│   ├── pages/              → Login, Register, Reader, and Publisher pages
+│   ├── services/           → Axios instances and API functions
+│   ├── context/            → Auth context and provider
+│   ├── hooks/              → useAuth and custom React hooks
+│   ├── utils/              → Token handlers and utility functions
+│   ├── App.tsx             → App routes and layout
+│   └── main.tsx            → Vite entry file
 
-### Backend:
-- **Spring Boot** – REST API for backend operations.
+🔐 AUTHENTICATION FLOW
+-----------------------
+- User logs in or registers → Receives JWT & Refresh Token
+- Tokens stored in `localStorage`:
+  - `token` → Access Token
+  - `refreshToken` → Refresh Token
+  - `user` → User object (role-based data)
+- Token auto-attached in axios headers
+- Role-based redirection:
+  - Reader → /reader/dashboard
+  - Publisher → /publisher/dashboard
 
+📤 BOOK UPLOAD MODULE
+-----------------------
+Publishers can:
+- Upload books via file (.pdf / .epub) OR external URL
+- Upload thumbnails (with preview)
+- Fill in metadata:
+  - title, author, description, language, ISBN, page count, published date
+- Drag-and-drop file upload with real-time progress bar
+- Validation and upload status notifications
 
-🔗 **Stay Connected**
-- 🌐 [Website](https://apollobook.vercel.app/)
+📦 SUPABASE STORAGE BUCKETS
+----------------------------
+- `books` → For book files (PDF / EPUB)
+- `thumbnails` → For book cover images
+
+🧾 ENVIRONMENT VARIABLES (.env)
+--------------------------------
+
+⚙️ SETUP INSTRUCTIONS
+-----------------------
+1. Clone the repository:
+   git clone 
+   cd apollo-frontend
+
+2. Install dependencies:
+   npm install
+
+3. Create a `.env` file and add the required Supabase and API configs (see above)
+
+4. Start the development server:
+   npm run dev
+
+5. Build for production:
+   npm run build
+
+📌 API ENDPOINTS USED
+-----------------------
+- POST `/auth/register` – Register user
+- POST `/auth/login` – Login and receive tokens
+- POST `/auth/refresh-token` – Get new access token
+- POST `/books/add-book` – Upload book (multipart/form-data)
+- GET `/books/list` – Fetch books for reader view (planned)
+
+🚧 FUTURE FEATURES
+-------------------
+- Admin Dashboard (User + Book management)
+- Built-in EPUB/PDF reader
+- Reader reading progress tracker
+- Ratings and review system
+- Payment integration (Stripe)
+- Chat or feedback via WebSocket (Socket.io)
+
+🧪 TESTING
+-----------
+- All API requests tested with Postman
+- Auth flow manually verified
+- Token refresh logic verified on expiry
+- File upload stress tested with large PDFs/EPUBs
+
+🧑‍💻 DEVELOPED BY
+------------------
+Apollo Team, 2025  
+Lead Frontend Developer: Supun Devendra 
+Email: supundevendra1207@gmail.com  
+GitHub: 
+
+📜 LICENSE
+-----------
+This project is licensed under the MIT License.
+
