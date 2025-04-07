@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -12,45 +12,109 @@ import {
   CardActions,
   Button,
   Pagination,
+  CircularProgress,
+  Alert,
+  Dialog,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 interface Book {
-  id: number;
+  bookId: number;
   title: string;
   author: string;
-  image: string;
-  url: string; // 👈 Added URL for PDF
+  thumbnail: string;
+  url: string;
 }
-
-const books: Book[] = [...Array(20)].map((_, i) => ({
-  id: i + 1,
-  title: `Book ${i + 1}`,
-  author: `Author ${i + 1}`,
-  image:
-    "https://i.postimg.cc/yNGQfztk/f-the-Best-Selling-Books-That-Might-Make-A-Great-Addition-To-Your-Library.jpg",
-  url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", // Sample PDF URL
-}));
 
 const ITEMS_PER_PAGE = 8;
 
 export default function LibraryBooks() {
+  const [books, setBooks] = useState<Book[]>([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [openReader, setOpenReader] = useState(false);
+  const [selectedBookUrl, setSelectedBookUrl] = useState<string | null>(null);
+
   const pageCount = Math.ceil(books.length / ITEMS_PER_PAGE);
   const displayedBooks = books.slice(
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   );
 
+  useEffect(() => {
+    const fetchBooks = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        interface ApiResponse {
+          content: {
+            bookId: number;
+            title: string;
+            author: string;
+            thumbnail: string;
+            url: string;
+          }[];
+        }
+
+        const response = await axios.get<ApiResponse>(
+          "https://crucial-lane-apollolibrary-9e92f19f.koyeb.app/api/v1/books/all",
+          {
+            params: {
+              page: 0,
+              size: 100,
+              sort: "title,asc",
+            },
+          }
+        );
+
+        const fetchedBooks = response.data.content.map((book) => ({
+          bookId: book.bookId,
+          title: book.title || "Unknown Title",
+          author: book.author || "Unknown Author",
+          thumbnail:
+            book.thumbnail ||
+            "https://via.placeholder.com/150x220?text=No+Image",
+          url: book.url || "#",
+        }));
+
+        setBooks(fetchedBooks);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch books. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
+
   const handleReadNow = (book: Book) => {
-    const link = document.createElement("a");
-    link.href = book.url;
-    link.download = `${book.title}.pdf`; // Optional download attribute
-    link.target = "_blank"; // Open in new tab or use "_self" to stay in same tab
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (!book.url || book.url === "#") {
+      alert("This book is not available for reading.");
+      return;
+    }
+    setSelectedBookUrl(book.url);
+    setOpenReader(true);
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -60,21 +124,26 @@ export default function LibraryBooks() {
 
       <Grid container spacing={3} justifyContent="center">
         {displayedBooks.map((book) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={book.id}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={book.bookId}>
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
                 <CardMedia
                   component="img"
-                  image={book.image}
+                  image={book.thumbnail}
                   alt={book.title}
                   height={200}
                   sx={{ borderRadius: "12px 12px 0 0" }}
                 />
                 <CardContent>
-                  <Typography variant="h6" fontWeight={500}>
+                  <Typography variant="h6" fontWeight={500} noWrap>
                     {book.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    noWrap
+                    title={book.author}
+                  >
                     {book.author}
                   </Typography>
                 </CardContent>
@@ -102,6 +171,32 @@ export default function LibraryBooks() {
           color="primary"
         />
       </Box>
+
+      {/* PDF Reader Dialog */}
+      <Dialog
+        open={openReader}
+        onClose={() => setOpenReader(false)}
+        fullScreen
+        sx={{ zIndex: 1300 }}
+      >
+        <Box sx={{ p: 2, bgcolor: "#000", height: "100vh" }}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+            <Typography variant="h6" color="white">
+              PDF Reader
+            </Typography>
+            <Button onClick={() => setOpenReader(false)} variant="contained" color="secondary">
+              Close
+            </Button>
+          </Box>
+          <iframe
+            src={selectedBookUrl ?? ""}
+            width="100%"
+            height="100%"
+            style={{ border: "none" }}
+            title="PDF Reader"
+          ></iframe>
+        </Box>
+      </Dialog>
     </Container>
   );
 }
