@@ -65,9 +65,6 @@ Publishers can:
 - `books` → For book files (PDF / EPUB)
 - `thumbnails` → For book cover images
 
-🧾 ENVIRONMENT VARIABLES (.env)
---------------------------------
-
 ⚙️ SETUP INSTRUCTIONS
 -----------------------
 1. Clone the repository:
